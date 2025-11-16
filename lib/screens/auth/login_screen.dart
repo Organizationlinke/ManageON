@@ -133,7 +133,6 @@ import 'package:manageon/constants.dart'; // تأكد أن هذا الملف م�
 import 'package:manageon/models/user_model.dart';
 import 'package:manageon/providers/app_state_provider.dart';
 import 'package:manageon/screens/home/home_screen.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'; // تأكد من استيراد supabase
 import 'package:manageon/global.dart'; // مثال على استيراد ملف الألوان
 import 'package:shared_preferences/shared_preferences.dart'; // لا تنسى هذا الاستيراد!
 
@@ -195,6 +194,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .maybeSingle();
 
       if (response != null) {
+         user_id=response["id"];
+user_level=response["level"];
         // User found, login successful
         final user = AppUser.fromJson(response);
         ref.read(loggedInUserProvider.notifier).state = user;
@@ -212,7 +213,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       } else {
         // User not found or password incorrect
         if (mounted) {
-          showSnackBar(context, 'اسم المستخدم أو كلمة المرور غير صحيحة', isError: true);
+          showSnackBar(context, 'اسم المستخدم أو كلمة9 المرور غير صحيحة', isError: true);
         }
       }
     } catch (e) {

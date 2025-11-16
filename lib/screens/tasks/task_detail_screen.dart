@@ -6,6 +6,7 @@ import 'package:manageon/global.dart';
 import 'package:manageon/models/task_model.dart';
 import 'package:manageon/providers/task_provider.dart';
 import 'package:manageon/providers/user_provider.dart';
+import 'package:manageon/screens/tasks/ProceduresScreen.dart';
 
 class TaskDetailScreen extends ConsumerStatefulWidget {
   final Task? task;
@@ -24,18 +25,20 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
   int? _selectedAssistantId;
   String _selectedPriority = 'Medium';
   bool _isLoading = false;
+  bool isadmin = user_level == 0;
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.task?.title);
-    _descriptionController = TextEditingController(text: widget.task?.description);
+    _descriptionController =
+        TextEditingController(text: widget.task?.description);
     _deadline = widget.task?.deadline;
-    _selectedStatusId = widget.task?.statusId??1;
+    _selectedStatusId = widget.task?.statusId ?? 1;
     _selectedAssistantId = widget.task?.assistantId;
     _selectedPriority = widget.task?.priority ?? 'Medium';
   }
-  
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -65,7 +68,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
       }
 
       setState(() => _isLoading = true);
-      
+
       final taskData = {
         'title': _titleController.text,
         'sub_title': _descriptionController.text,
@@ -81,7 +84,10 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
           await supabase.from('tasks').insert(taskData);
         } else {
           // Update Task
-          await supabase.from('tasks').update(taskData).eq('id', widget.task!.id);
+          await supabase
+              .from('tasks')
+              .update(taskData)
+              .eq('id', widget.task!.id);
         }
         ref.invalidate(tasksProvider); // Invalidate provider to force a refresh
         if (mounted) {
@@ -108,15 +114,88 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: 
+        Row(
+  children: [
+    Expanded(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colorbar,
+          padding: const EdgeInsets.symmetric(vertical: 14),
+        ),
+        onPressed: () {
+          if (widget.task == null) {
+            showSnackBar(context, "يجب حفظ المهمة أولاً قبل تسجيل الإجراءات",
+                isError: true);
+            return;
+          }
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ProceduresScreen(
+                taskId: widget.task!.id,
+                type: 1,
+              ),
+            ),
+          );
+        },
+        child: const Text(
+          "الإجراءات",
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+      ),
+    ),
+
+    const SizedBox(width: 12),
+
+    Expanded(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colorbar,
+          padding: const EdgeInsets.symmetric(vertical: 14),
+        ),
+        onPressed: () {
+          if (widget.task == null) {
+            showSnackBar(context, "يجب حفظ المهمة أولاً قبل تسجيل المتابعات",
+                isError: true);
+            return;
+          }
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ProceduresScreen(
+                taskId: widget.task!.id,
+                type: 2,
+              ),
+            ),
+          );
+        },
+        child: const Text(
+          "المتابعات",
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+      ),
+    ),
+  ],
+)
+
+        ),
         appBar: AppBar(
           title: Text(widget.task == null ? 'مهمة جديدة' : 'تعديل المهمة'),
           actions: [
-            if (widget.task != null)
+            if (widget.task != null && isadmin)
               IconButton(
                 icon: const Icon(Icons.delete_outline, color: Colors.red),
                 onPressed: () async {
                   // Add confirmation dialog
-                  await supabase.from('tasks').delete().eq('id', widget.task!.id);
+                  await supabase
+                      .from('tasks')
+                      .delete()
+                      .eq('id', widget.task!.id);
                   ref.invalidate(tasksProvider);
                   if (mounted) {
                     showSnackBar(context, 'تم حذف المهمة');
@@ -135,60 +214,79 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
                   children: [
                     TextFormField(
                       controller: _titleController,
-                      decoration:  InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                        labelText: 'عنوان المهمة'),
-                      validator: (value) => value!.isEmpty ? 'هذا الحقل مطلوب' : null,
+                      enabled: isadmin,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          labelText: 'عنوان المهمة'),
+                      validator: (value) =>
+                          value!.isEmpty ? 'هذا الحقل مطلوب' : null,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _descriptionController,
-                      decoration:  InputDecoration(labelText: 'الوصف',
-                       border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8)),),
+                      enabled: isadmin,
+                      decoration: InputDecoration(
+                        labelText: 'الوصف',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
                       maxLines: 3,
                     ),
                     const SizedBox(height: 16),
                     // Deadline
                     Card(
                       child: ListTile(
-                        title: Text('تاريخ الانتهاء: ${_deadline == null ? 'غير محدد' : DateFormat('yyyy-MM-dd').format(_deadline!)}'),
-                        trailing: const Icon(Icons.calendar_today,color: colorbar,),
-                        onTap: _selectDate,
+                        title: Text(
+                            'تاريخ الانتهاء: ${_deadline == null ? 'غير محدد' : DateFormat('yyyy-MM-dd').format(_deadline!)}'),
+                        trailing: const Icon(
+                          Icons.calendar_today,
+                          color: colorbar,
+                        ),
+                        onTap: isadmin ? _selectDate : null,
                       ),
                     ),
                     const SizedBox(height: 16),
                     // Priority
                     DropdownButtonFormField<String>(
                       value: _selectedPriority,
-                      
-                      decoration:  InputDecoration(labelText: 'الأولوية',
-                       border: OutlineInputBorder(
+
+                      decoration: InputDecoration(
+                        labelText: 'الأولوية',
+                        border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8)),
                       ),
                       items: ['Low', 'Medium', 'High'].map((p) {
                         return DropdownMenuItem(value: p, child: Text(p));
                       }).toList(),
-                      onChanged: (value) {
-                        setState(() => _selectedPriority = value!);
-                      },
+                      onChanged: isadmin
+                          ? (value) {
+                              setState(() => _selectedPriority = value!);
+                            }
+                          : null, // <<< تعطيل
                     ),
                     const SizedBox(height: 16),
                     // Status
                     statusesAsync.when(
                       data: (statuses) => DropdownButtonFormField<int>(
                         value: _selectedStatusId,
-                        decoration:  InputDecoration(labelText: 'الحالة',
-                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8)),),
+                        decoration: InputDecoration(
+                          labelText: 'الحالة',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                        ),
                         items: statuses.map((s) {
-                          return DropdownMenuItem(value: s['id'] as int, child: Text(s['status_name']));
+                          return DropdownMenuItem(
+                              value: s['id'] as int,
+                              child: Text(s['status_name']));
                         }).toList(),
-                        onChanged: (value) => setState(() => _selectedStatusId = value),
-                         validator: (value) => value == null ? 'اختر حالة' : null,
+                        onChanged: (value) =>
+                            setState(() => _selectedStatusId = value),
+                        validator: (value) =>
+                            value == null ? 'اختر حالة' : null,
                       ),
-                      loading: () => const Center(child: CircularProgressIndicator()),
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
                       error: (e, s) => Text('خطأ: $e'),
                     ),
                     const SizedBox(height: 16),
@@ -196,16 +294,24 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
                     usersAsync.when(
                       data: (users) => DropdownButtonFormField<int>(
                         value: _selectedAssistantId,
-                        decoration:  InputDecoration(labelText: 'المسؤول',
-                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8)),),
+                        decoration: InputDecoration(
+                          labelText: 'المسؤول',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                        ),
                         items: users.map((u) {
-                          return DropdownMenuItem(value: u.id, child: Text(u.fullName));
+                          return DropdownMenuItem(
+                              value: u.id, child: Text(u.fullName));
                         }).toList(),
-                        onChanged: (value) => setState(() => _selectedAssistantId = value),
-                        validator: (value) => value == null ? 'اختر مسؤول' : null,
+                        onChanged: isadmin
+                            ? (value) =>
+                                setState(() => _selectedAssistantId = value)
+                            : null,
+                        validator: (value) =>
+                            value == null ? 'اختر مسؤول' : null,
                       ),
-                      loading: () => const Center(child: CircularProgressIndicator()),
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
                       error: (e, s) => Text('خطأ: $e'),
                     ),
                   ],

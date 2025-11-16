@@ -44,9 +44,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (response .isNotEmpty) {
       user_id=response["id"];
+user_level=response["user_level"];
       // user_uuid=response["uuid"];
       user_respose=response;
-     
+          print('user_level:$user_level');
+          print('user_id:$user_id');
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('user_enter', userEnter);
       await prefs.setString('pass', pass);
