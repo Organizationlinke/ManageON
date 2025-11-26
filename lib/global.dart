@@ -34,31 +34,5 @@ List<String> selectedAreas = [];
 List<String> selectedAreas2 = [];
 
 
-void checked(){
- new_level==2?check_farm='area':
-new_level==3?check_farm='sector':
-new_level==4?check_farm='reservoir':
-check_farm='section';
-old_checked();
-}
-void old_checked(){
- new_level==3?old_check_farm='area':
-new_level==4?old_check_farm='sector':
-new_level==5?old_check_farm='reservoir':
-old_check_farm='farm';
-}
 
-void checked2(){
- new_level2==2?check_farm2='area':
-new_level2==3?check_farm2='sector':
-new_level2==4?check_farm2='reservoir':
-check_farm2='section';
-old_checked2();
-}
-void old_checked2(){
- new_level2==3?old_check_farm2='area':
-new_level2==4?old_check_farm2='sector':
-new_level2==5?old_check_farm2='reservoir':
-old_check_farm2='farm';
-}
 

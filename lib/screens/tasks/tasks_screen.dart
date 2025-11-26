@@ -24,7 +24,8 @@ class TasksScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     TabBar(
-                      isScrollable: true,
+                      isScrollable: false,
+                      labelPadding: EdgeInsets.zero,
                       tabs: statuses.map((s) => Tab(text: s['status_name'])).toList(),
                     ),
                     Expanded(

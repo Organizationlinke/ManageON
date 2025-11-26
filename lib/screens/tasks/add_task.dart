@@ -1,5 +1,3 @@
-// هذا الملف يحتوي على الشاشات الأساسية لتطبيق إدارة المهام
-// باستخدام Flutter و Supabase
 
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manageon/global.dart';
 import 'package:manageon/providers/app_state_provider.dart';
-import 'package:manageon/screens/analytics/analytics_screen.dart';
 import 'package:manageon/screens/auth/login_screen.dart';
-import 'package:manageon/screens/dashboard/dashboard_screen.dart';
 import 'package:manageon/screens/profile/user_profile_screen.dart';
 import 'package:manageon/screens/tasks/tasks_screen.dart';
 import 'package:manageon/screens/team/team_screen.dart';
@@ -21,9 +19,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    DashboardScreen(),
+    // DashboardScreen(),
+    Center(child: Text("DashboardScreen"),),
     TasksScreen(),
-    AnalyticsScreen(),
+    Center(child: Text("reports"),),
+    // AnalyticsScreen(),
     TeamScreen(),
   ];
 

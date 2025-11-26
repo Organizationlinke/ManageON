@@ -193,6 +193,10 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
                 onPressed: () async {
                   // Add confirmation dialog
                   await supabase
+                      .from('procedures')
+                      .delete()
+                      .eq('tasks_id', widget.task!.id);
+                  await supabase
                       .from('tasks')
                       .delete()
                       .eq('id', widget.task!.id);
