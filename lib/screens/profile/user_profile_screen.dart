@@ -80,25 +80,52 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
     try {
       String? newImageUrl = _imageUrl;
-      if (_imageBytes != null && _imageUrl != null && !Uri.parse(_imageUrl!).hasAuthority) {
-        final bucket = supabase.storage.from('userphoto');
-        final oldUrl = _currentUser!.photoUrl;
+
+if (_imageBytes != null) {
+  final bucket = supabase.storage.from('userphoto');
+
+  // احذف الصورة القديمة
+  final oldUrl = _currentUser!.photoUrl;
+  if (oldUrl != null && oldUrl.isNotEmpty && !oldUrl.endsWith('default_avatar.png')) {
+    try {
+      final oldPath = oldUrl.split('/').last;
+      await bucket.remove([oldPath]);
+    } catch (_) {}
+  }
+
+  // ارفع الصورة الجديدة
+  final fileName = const Uuid().v4();
+  final filePath = "$fileName.png";
+
+  await bucket.uploadBinary(
+    filePath,
+    _imageBytes!,
+    fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+  );
+
+  newImageUrl = bucket.getPublicUrl(filePath);
+}
+
+      // String? newImageUrl = _imageUrl;
+      // if (_imageBytes != null && _imageUrl != null && !Uri.parse(_imageUrl!).hasAuthority) {
+      //   final bucket = supabase.storage.from('userphoto');
+      //   final oldUrl = _currentUser!.photoUrl;
         
-        if (oldUrl != null && oldUrl.isNotEmpty && !oldUrl.endsWith('default_avatar.png')) {
-          try {
-            final oldPath = oldUrl.split('/').last;
-            await bucket.remove([oldPath]);
-          } catch (e) {
-            // Ignore error if old file doesn't exist
-          }
-        }
+      //   if (oldUrl != null && oldUrl.isNotEmpty && !oldUrl.endsWith('default_avatar.png')) {
+      //     try {
+      //       final oldPath = oldUrl.split('/').last;
+      //       await bucket.remove([oldPath]);
+      //     } catch (e) {
+      //       // Ignore error if old file doesn't exist
+      //     }
+      //   }
         
-        final randomFileName = const Uuid().v4();
-        final filePath = '$randomFileName.png';
-        await bucket.uploadBinary(filePath, _imageBytes!,
-            fileOptions: const FileOptions(cacheControl: '3600', upsert: false));
-        newImageUrl = bucket.getPublicUrl(filePath);
-      }
+      //   final randomFileName = const Uuid().v4();
+      //   final filePath = '$randomFileName.png';
+      //   await bucket.uploadBinary(filePath, _imageBytes!,
+      //       fileOptions: const FileOptions(cacheControl: '3600', upsert: false));
+      //   newImageUrl = bucket.getPublicUrl(filePath);
+      // }
       
       final Map<String, dynamic> updates = {
         'full_name': _nameController.text,
@@ -175,7 +202,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       foregroundColor: Colors.white,
                     ),
                     onPressed: _updateProfile,
-                    child: const Text('تحديث البيانات'),
+                    child: const Text('تحديث-البيانات'),
                   ),
                 ],
               ),

@@ -131,7 +131,7 @@ user_level=response["level"];
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.network(
-                      'https://qsvhdpitcljewzqjqhbe.supabase.co/storage/v1/object/public/userphoto//manageon2.png',
+                      'https://xqrkwvakkvihaeujnuvh.supabase.co/storage/v1/object/public/userphoto/manageon2.png',
                       width: 300,
                     ),
                     const SizedBox(height: 50),
