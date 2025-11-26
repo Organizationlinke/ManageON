@@ -20,9 +20,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     // DashboardScreen(),
-    Center(child: Text("DashboardScreen"),),
+    // Center(child: Text("DashboardScreen"),),
     TasksScreen(),
-    Center(child: Text("reports"),),
+    // Center(child: Text("reports"),),
     // AnalyticsScreen(),
     TeamScreen(),
   ];
@@ -73,18 +73,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard_outlined),
-              label: 'لوحة التحكم',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.dashboard_outlined),
+            //   label: 'لوحة التحكم',
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.list_alt_outlined),
               label: 'المهام',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart_outlined),
-              label: 'التقارير',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.bar_chart_outlined),
+            //   label: 'التقارير',
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.group_outlined),
               label: 'الفريق',
