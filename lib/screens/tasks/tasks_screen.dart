@@ -1,10 +1,12 @@
-// This is a simplified version. A full Kanban board with drag-and-drop is more complex.
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manageon/global.dart';
 import 'package:manageon/providers/task_provider.dart';
 import 'package:manageon/screens/tasks/task_detail_screen.dart';
 import 'package:manageon/widgets/task/task_card.dart';
+import 'package:manageon/models/task_model.dart';
 
 class TasksScreen extends ConsumerWidget {
   const TasksScreen({super.key});
@@ -23,24 +25,23 @@ class TasksScreen extends ConsumerWidget {
                 length: statuses.length,
                 child: Column(
                   children: [
+                    // 🔵 فلتر الأقسام أعلى الشاشة
+                 if( user_level==0)  _buildDepartmentFilter(ref),
+
+                    // 🔵 TabBar للحالات
                     TabBar(
                       isScrollable: false,
                       labelPadding: EdgeInsets.zero,
                       tabs: statuses.map((s) => Tab(text: s['status_name'])).toList(),
                     ),
+
                     Expanded(
                       child: TabBarView(
                         children: statuses.map((status) {
-                          final filteredTasks = tasks.where((task) => task.statusId == status['id']).toList();
-                          return RefreshIndicator(
-                            onRefresh: () => ref.refresh(tasksProvider.future),
-                            child: ListView.builder(
-                              padding: const EdgeInsets.all(8.0),
-                              itemCount: filteredTasks.length,
-                              itemBuilder: (context, index) {
-                                return TaskCard(task: filteredTasks[index]);
-                              },
-                            ),
+                          return _buildTaskList(
+                            ref,
+                            tasks,
+                            status['id'],
                           );
                         }).toList(),
                       ),
@@ -56,14 +57,100 @@ class TasksScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, s) => Center(child: Text('خطأ في تحميل المهام: $e')),
       ),
+
+      // 🔵 زر إضافة مهمة
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => const TaskDetailScreen()),
-          ).then((_) => ref.refresh(tasksProvider)); // Refresh list after adding/editing
+          ).then((_) => ref.refresh(tasksProvider));
+
         },
         backgroundColor: colorbar,
         child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------
+  // 🔵 ويدجيت فلتر الأقسام
+  // ---------------------------------------------------------
+  Widget _buildDepartmentFilter(WidgetRef ref) {
+  final departmentsAsync = ref.watch(departmentsProvider);
+  final selectedDept = ref.watch(departmentFilterProvider);
+
+  return departmentsAsync.when(
+    data: (departments) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Row(
+          children: [
+            // زر "كل الأقسام"
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: ChoiceChip(
+                label: const Text("كل الأقسام"),
+                selected: selectedDept == null,
+                onSelected: (_) {
+                  ref.read(departmentFilterProvider.notifier).state = null;
+                },
+              ),
+            ),
+            // أزرار كل قسم
+            ...departments.map((d) {
+              final deptName = d['department_name'] as String?;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: ChoiceChip(
+                  label: Text(deptName ?? ''),
+                  selected: selectedDept == deptName,
+                  onSelected: (_) {
+                    ref.read(departmentFilterProvider.notifier).state = deptName;
+                  },
+                ),
+              );
+            }).toList(),
+          ],
+        ),
+      );
+    },
+    loading: () => const Padding(
+      padding: EdgeInsets.all(8.0),
+      child: CircularProgressIndicator(),
+    ),
+    error: (e, s) => const Text("خطأ في تحميل الأقسام"),
+  );
+}
+
+
+
+
+  // ---------------------------------------------------------
+  // 🔵 ويدجيت قائمة المهام داخل TabBarView
+  // ---------------------------------------------------------
+  Widget _buildTaskList(WidgetRef ref, List<Task> tasks, int statusId) {
+    final selectedDept = ref.watch(departmentFilterProvider);
+
+    // فلترة حسب الحالة + القسم
+    final filteredTasks = tasks.where((task) {
+      final byStatus = task.statusId == statusId;
+
+      final byDept = selectedDept == null ||
+          // (task.user?.department?.department_name == selectedDept);
+           (task.departmentName == selectedDept);
+
+      return byStatus && byDept;
+    }).toList();
+
+    return RefreshIndicator(
+      onRefresh: () => ref.refresh(tasksProvider.future),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(8.0),
+        itemCount: filteredTasks.length,
+        itemBuilder: (context, index) {
+          return TaskCard(task: filteredTasks[index]);
+        },
       ),
     );
   }

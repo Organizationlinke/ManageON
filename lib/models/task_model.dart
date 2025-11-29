@@ -8,7 +8,9 @@ class Task {
   final int? assistantId;
   final String? assistantName; // من جدول usersin
   final String? assistantAvatar; // من جدول usersin
+  final String? departmentName; // من جدول departments
   final String priority;
+
 
   Task({
     required this.id,
@@ -20,6 +22,7 @@ class Task {
     this.assistantId,
     this.assistantName,
     this.assistantAvatar,
+     this.departmentName, // جديد
     required this.priority,
   });
 
@@ -34,6 +37,7 @@ class Task {
       assistantId: json['assistant'],
       assistantName: json['usersin']?['full_name'] ?? 'غير معين',
       assistantAvatar: json['usersin']?['photo_url'],
+        departmentName: json['usersin']?['department']?['department_name'], // جديد
       priority: json['priority'] ?? 'Medium',
     );
   }
