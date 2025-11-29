@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manageon/constants.dart'; // تأكد أن هذا الملف موجود ويحتوي على kPrimaryColor
+import 'package:manageon/mainhome.dart';
 import 'package:manageon/models/user_model.dart';
 import 'package:manageon/providers/app_state_provider.dart';
 import 'package:manageon/screens/home/home_screen.dart';
@@ -79,7 +80,10 @@ user_level=response["level"];
 
         if (mounted) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) =>
+             const HomeScreen()
+            //  MainFiltersScreen()
+             ),
           );
         }
       } else {

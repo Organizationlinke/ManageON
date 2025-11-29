@@ -32,6 +32,8 @@ final tasksProvider = FutureProvider<List<Task>>((ref) async {
 // Provider to fetch all statuses
 final statusesProvider =
     FutureProvider<List<Map<String, dynamic>>>((ref) async {
-  final response = await supabase.from('status').select();
+  final response =user_level == 0?
+  await supabase.from('status').select().lte('id', 4).order('id', ascending: true)
+  : await supabase.from('status').select().lte('id', 3).order('id', ascending: true);
   return List<Map<String, dynamic>>.from(response);
 });

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manageon/global.dart';
@@ -26,7 +24,7 @@ class TasksScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     // 🔵 فلتر الأقسام أعلى الشاشة
-                 if( user_level==0)  _buildDepartmentFilter(ref),
+                    if (user_level == 0) _buildDepartmentFilter(ref),
 
                     // 🔵 TabBar للحالات
                     // TabBar(
@@ -35,47 +33,48 @@ class TasksScreen extends ConsumerWidget {
                     //   tabs: statuses.map((s) => Tab(text: s['status_name'])).toList(),
                     // ),
                     TabBar(
-  isScrollable: false,
-  labelPadding: EdgeInsets.zero,
-  tabs: statuses.map((s) {
-    final statusId = s['id'];
+                      isScrollable: false,
+                      labelPadding: EdgeInsets.zero,
+                      tabs: statuses.map((s) {
+                        final statusId = s['id'];
 
-    // عدد المهام بعد الفلترة (القسم + الحالة)
-    final count = tasks.where((task) {
-      final byStatus = task.statusId == statusId;
+                        // عدد المهام بعد الفلترة (القسم + الحالة)
+                        final count = tasks.where((task) {
+                          final byStatus = task.statusId == statusId;
 
-      final selectedDept = ref.watch(departmentFilterProvider);
-      final byDept = selectedDept == null ||
-          task.departmentName == selectedDept;
+                          final selectedDept =
+                              ref.watch(departmentFilterProvider);
+                          final byDept = selectedDept == null ||
+                              task.departmentName == selectedDept;
 
-      return byStatus && byDept;
-    }).length;
+                          return byStatus && byDept;
+                        }).length;
 
-    return Tab(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(s['status_name']),
-          const SizedBox(width: 6),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              count.toString(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }).toList(),
-),
-
+                        return Tab(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(s['status_name']),
+                              const SizedBox(width: 6),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  count.toString(),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
 
                     Expanded(
                       child: TabBarView(
@@ -101,16 +100,18 @@ class TasksScreen extends ConsumerWidget {
       ),
 
       // 🔵 زر إضافة مهمة
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton:user_level==0? FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const TaskDetailScreen()),
-          ).then((_) => ref.refresh(tasksProvider));
-
+          Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                    builder: (context) => const TaskDetailScreen()),
+              )
+              .then((_) => ref.refresh(tasksProvider));
         },
         backgroundColor: colorbar,
         child: const Icon(Icons.add, color: Colors.white),
-      ),
+      ):null,
     );
   }
 
@@ -118,55 +119,53 @@ class TasksScreen extends ConsumerWidget {
   // 🔵 ويدجيت فلتر الأقسام
   // ---------------------------------------------------------
   Widget _buildDepartmentFilter(WidgetRef ref) {
-  final departmentsAsync = ref.watch(departmentsProvider);
-  final selectedDept = ref.watch(departmentFilterProvider);
+    final departmentsAsync = ref.watch(departmentsProvider);
+    final selectedDept = ref.watch(departmentFilterProvider);
 
-  return departmentsAsync.when(
-    data: (departments) {
-      return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: Row(
-          children: [
-            // زر "كل الأقسام"
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: ChoiceChip(
-                label: const Text("كل الأقسام"),
-                selected: selectedDept == null,
-                onSelected: (_) {
-                  ref.read(departmentFilterProvider.notifier).state = null;
-                },
-              ),
-            ),
-            // أزرار كل قسم
-            ...departments.map((d) {
-              final deptName = d['department_name'] as String?;
-              return Padding(
+    return departmentsAsync.when(
+      data: (departments) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: Row(
+            children: [
+              // زر "كل الأقسام"
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: ChoiceChip(
-                  label: Text(deptName ?? ''),
-                  selected: selectedDept == deptName,
+                  label: const Text("كل الأقسام"),
+                  selected: selectedDept == null,
                   onSelected: (_) {
-                    ref.read(departmentFilterProvider.notifier).state = deptName;
+                    ref.read(departmentFilterProvider.notifier).state = null;
                   },
                 ),
-              );
-            }).toList(),
-          ],
-        ),
-      );
-    },
-    loading: () => const Padding(
-      padding: EdgeInsets.all(8.0),
-      child: CircularProgressIndicator(),
-    ),
-    error: (e, s) => const Text("خطأ في تحميل الأقسام"),
-  );
-}
-
-
-
+              ),
+              // أزرار كل قسم
+              ...departments.map((d) {
+                final deptName = d['department_name'] as String?;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ChoiceChip(
+                    label: Text(deptName ?? ''),
+                    selected: selectedDept == deptName,
+                    onSelected: (_) {
+                      ref.read(departmentFilterProvider.notifier).state =
+                          deptName;
+                    },
+                  ),
+                );
+              }).toList(),
+            ],
+          ),
+        );
+      },
+      loading: () => const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: CircularProgressIndicator(),
+      ),
+      error: (e, s) => const Text("خطأ في تحميل الأقسام"),
+    );
+  }
 
   // ---------------------------------------------------------
   // 🔵 ويدجيت قائمة المهام داخل TabBarView
@@ -180,7 +179,7 @@ class TasksScreen extends ConsumerWidget {
 
       final byDept = selectedDept == null ||
           // (task.user?.department?.department_name == selectedDept);
-           (task.departmentName == selectedDept);
+          (task.departmentName == selectedDept);
 
       return byStatus && byDept;
     }).toList();

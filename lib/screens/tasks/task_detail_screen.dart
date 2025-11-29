@@ -321,11 +321,11 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
                   ],
                 ),
               ),
-        floatingActionButton: FloatingActionButton(
+      floatingActionButton: user_level!<2?  FloatingActionButton(
           onPressed: _isLoading ? null : _saveTask,
           backgroundColor: colorbar,
           child: const Icon(Icons.save, color: Colors.white),
-        ),
+        ):null,
       ),
     );
   }
