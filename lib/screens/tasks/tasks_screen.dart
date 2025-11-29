@@ -29,11 +29,53 @@ class TasksScreen extends ConsumerWidget {
                  if( user_level==0)  _buildDepartmentFilter(ref),
 
                     // 🔵 TabBar للحالات
+                    // TabBar(
+                    //   isScrollable: false,
+                    //   labelPadding: EdgeInsets.zero,
+                    //   tabs: statuses.map((s) => Tab(text: s['status_name'])).toList(),
+                    // ),
                     TabBar(
-                      isScrollable: false,
-                      labelPadding: EdgeInsets.zero,
-                      tabs: statuses.map((s) => Tab(text: s['status_name'])).toList(),
-                    ),
+  isScrollable: false,
+  labelPadding: EdgeInsets.zero,
+  tabs: statuses.map((s) {
+    final statusId = s['id'];
+
+    // عدد المهام بعد الفلترة (القسم + الحالة)
+    final count = tasks.where((task) {
+      final byStatus = task.statusId == statusId;
+
+      final selectedDept = ref.watch(departmentFilterProvider);
+      final byDept = selectedDept == null ||
+          task.departmentName == selectedDept;
+
+      return byStatus && byDept;
+    }).length;
+
+    return Tab(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(s['status_name']),
+          const SizedBox(width: 6),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: Colors.blue.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              count.toString(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }).toList(),
+),
+
 
                     Expanded(
                       child: TabBarView(
