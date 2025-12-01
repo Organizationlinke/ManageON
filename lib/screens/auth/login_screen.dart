@@ -89,7 +89,7 @@ user_level=response["level"];
       } else {
         // User not found or password incorrect
         if (mounted) {
-          showSnackBar(context, 'اسم المستخدم أو كلمة9 المرور غير صحيحة', isError: true);
+          showSnackBar(context, 'اسم المستخدم أو كلمة المرور غير صحيحة', isError: true);
         }
       }
     } catch (e) {

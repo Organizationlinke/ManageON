@@ -26,6 +26,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
   String _selectedPriority = 'Medium';
   bool _isLoading = false;
   bool isadmin = user_level == 0;
+  bool _isFollow = false;
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
     _selectedStatusId = widget.task?.statusId ?? 1;
     _selectedAssistantId = widget.task?.assistantId;
     _selectedPriority = widget.task?.priority ?? 'Medium';
+    _isFollow = widget.task?.isFollow ?? false;
   }
 
   @override
@@ -76,6 +78,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
         'status_id': _selectedStatusId,
         'assistant': _selectedAssistantId,
         'priority': _selectedPriority,
+        'isfollow': _isFollow,
       };
 
       try {
@@ -115,75 +118,72 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: 
-        Row(
-  children: [
-    Expanded(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: colorbar,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-        ),
-        onPressed: () {
-          if (widget.task == null) {
-            showSnackBar(context, "يجب حفظ المهمة أولاً قبل تسجيل الإجراءات",
-                isError: true);
-            return;
-          }
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorbar,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () {
+                      if (widget.task == null) {
+                        showSnackBar(
+                            context, "يجب حفظ المهمة أولاً قبل تسجيل الإجراءات",
+                            isError: true);
+                        return;
+                      }
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ProceduresScreen(
-                taskId: widget.task!.id,
-                type: 1,
-              ),
-            ),
-          );
-        },
-        child: const Text(
-          "الإجراءات",
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
-      ),
-    ),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ProceduresScreen(
+                            taskId: widget.task!.id,
+                            type: 1,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "الإجراءات",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorbar,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () {
+                      if (widget.task == null) {
+                        showSnackBar(
+                            context, "يجب حفظ المهمة أولاً قبل تسجيل المتابعات",
+                            isError: true);
+                        return;
+                      }
 
-    const SizedBox(width: 12),
-
-    Expanded(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: colorbar,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-        ),
-        onPressed: () {
-          if (widget.task == null) {
-            showSnackBar(context, "يجب حفظ المهمة أولاً قبل تسجيل المتابعات",
-                isError: true);
-            return;
-          }
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ProceduresScreen(
-                taskId: widget.task!.id,
-                type: 2,
-              ),
-            ),
-          );
-        },
-        child: const Text(
-          "المتابعات",
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
-      ),
-    ),
-  ],
-)
-
-        ),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ProceduresScreen(
+                            taskId: widget.task!.id,
+                            type: 2,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "المتابعات",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ),
+                ),
+              ],
+            )),
         appBar: AppBar(
           title: Text(widget.task == null ? 'مهمة جديدة' : 'تعديل المهمة'),
           actions: [
@@ -318,14 +318,37 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
                           const Center(child: CircularProgressIndicator()),
                       error: (e, s) => Text('خطأ: $e'),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: _isFollow,
+                            onChanged: isadmin
+                                ? (val) {
+                                    setState(() {
+                                      _isFollow = val ?? false;
+                                    });
+                                  }
+                                : null, // = null يخلي الـ Checkbox Disabled تلقائياً
+                          ),
+                          const Text(
+                            "متابعة",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-      floatingActionButton: user_level!<2?  FloatingActionButton(
-          onPressed: _isLoading ? null : _saveTask,
-          backgroundColor: colorbar,
-          child: const Icon(Icons.save, color: Colors.white),
-        ):null,
+        floatingActionButton: user_level! < 2
+            ? FloatingActionButton(
+                onPressed: _isLoading ? null : _saveTask,
+                backgroundColor: colorbar,
+                child: const Icon(Icons.save, color: Colors.white),
+              )
+            : null,
       ),
     );
   }

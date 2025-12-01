@@ -10,6 +10,7 @@ class Task {
   final String? assistantAvatar; // من جدول usersin
   final String? departmentName; // من جدول departments
   final String priority;
+  final bool isFollow;
 
 
   Task({
@@ -24,6 +25,7 @@ class Task {
     this.assistantAvatar,
      this.departmentName, // جديد
     required this.priority,
+    required this.isFollow,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
@@ -39,6 +41,7 @@ class Task {
       assistantAvatar: json['usersin']?['photo_url'],
         departmentName: json['usersin']?['department']?['department_name'], // جديد
       priority: json['priority'] ?? 'Medium',
+      isFollow: json['isfollow'] ?? false,
     );
   }
 }

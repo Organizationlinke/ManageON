@@ -18,10 +18,14 @@ final tasksProvider = FutureProvider<List<Task>>((ref) async {
       ? response = await supabase
           .from('tasks')
           .select('*, status_table:status(*), usersin:assistant(*,department:departments(*))')
-      : response = await supabase
+      :user_level == 1? response = await supabase
           .from('tasks')
           .select('*, status_table:status(*), usersin:assistant(*,department:departments(*))')
-          .eq('assistant', user_id);
+          .eq('assistant', user_id)
+          :response = await supabase
+          .from('tasks')
+          .select('*, status_table:status(*), usersin:assistant(*,department:departments(*))')
+          .eq('isfollow', true);
 
   final List<Task> tasks =
       (response as List).map((item) => Task.fromJson(item)).toList();
