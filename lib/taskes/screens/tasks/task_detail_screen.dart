@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:manageon/constants.dart';
 import 'package:manageon/global.dart';
-import 'package:manageon/models/task_model.dart';
-import 'package:manageon/providers/task_provider.dart';
-import 'package:manageon/providers/user_provider.dart';
-import 'package:manageon/screens/tasks/ProceduresScreen.dart';
+import 'package:manageon/taskes/models/task_model.dart';
+import 'package:manageon/taskes/providers/task_provider.dart';
+import 'package:manageon/taskes/providers/user_provider.dart';
+import 'package:manageon/taskes/screens/tasks/ProceduresScreen.dart';
 
 class TaskDetailScreen extends ConsumerStatefulWidget {
   final Task? task;

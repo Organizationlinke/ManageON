@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manageon/constants.dart';
-import 'package:manageon/models/user_model.dart';
+import 'package:manageon/taskes/models/user_model.dart';
 
 // Provider to fetch all users with their related data
 final allUsersProvider = FutureProvider<List<AppUser>>((ref) async {

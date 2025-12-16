@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:manageon/providers/user_provider.dart';
-import 'package:manageon/widgets/team/team_member_card.dart';
+import 'package:manageon/taskes/providers/user_provider.dart';
+import 'package:manageon/taskes/widgets/team/team_member_card.dart';
 
 class TeamScreen extends ConsumerWidget {
   const TeamScreen({super.key});

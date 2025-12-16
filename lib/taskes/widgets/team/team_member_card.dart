@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:manageon/models/user_model.dart';
+import 'package:manageon/taskes/models/user_model.dart';
 
 class TeamMemberCard extends StatelessWidget {
   final AppUser user;

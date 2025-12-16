@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:manageon/constants.dart';
 import 'package:manageon/global.dart';
-import 'package:manageon/models/user_model.dart';
-import 'package:manageon/providers/app_state_provider.dart';
+import 'package:manageon/taskes/models/user_model.dart';
+import 'package:manageon/taskes/providers/app_state_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 

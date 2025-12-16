@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manageon/constants.dart';
 import 'package:manageon/global.dart';
-import 'package:manageon/models/task_model.dart';
+import 'package:manageon/taskes/models/task_model.dart';
 
 // فلتر القسم المختار
 final departmentFilterProvider = StateProvider<String?>((ref) => null);

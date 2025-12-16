@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:manageon/screens/home/home_screen.dart';
+import 'package:manageon/station/reports/FarzaReport.dart';
+import 'package:manageon/station/reports/reports.dart';
+import 'package:manageon/taskes/screens/home/home_screen.dart';
 
 class MainFiltersScreen extends StatelessWidget {
   const MainFiltersScreen({super.key});
@@ -41,7 +43,14 @@ class MainFiltersScreen extends StatelessWidget {
                       title: "التشغيل",
                       icon: Icons.settings,
                       color: Colors.orange,
-                      onTap: () {},
+                      onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     const FarzaReportScreen()
+                                 
+                          ));
+                      },
                     ),
                   ),
                 ],
@@ -65,7 +74,14 @@ class MainFiltersScreen extends StatelessWidget {
                       title: "التقارير",
                       icon: Icons.bar_chart,
                       color: Colors.purple,
-                      onTap: () {},
+                      onTap: () {
+                                 Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     const ReportsDashboardScreen()
+                                 
+                          ));
+                      },
                     ),
                   ),
                 ],

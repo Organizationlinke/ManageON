@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manageon/constants.dart'; // تأكد أن هذا الملف موجود ويحتوي على kPrimaryColor
 import 'package:manageon/mainhome.dart';
-import 'package:manageon/models/user_model.dart';
-import 'package:manageon/providers/app_state_provider.dart';
-import 'package:manageon/screens/home/home_screen.dart';
+import 'package:manageon/taskes/models/user_model.dart';
+import 'package:manageon/taskes/providers/app_state_provider.dart';
+import 'package:manageon/taskes/screens/home/home_screen.dart';
 import 'package:manageon/global.dart'; // مثال على استيراد ملف الألوان
 import 'package:shared_preferences/shared_preferences.dart'; // لا تنسى هذا الاستيراد!
 
@@ -81,8 +81,8 @@ user_level=response["level"];
         if (mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) =>
-             const HomeScreen()
-            //  MainFiltersScreen()
+            //  const HomeScreen()
+           user_level==0?  MainFiltersScreen():HomeScreen()
              ),
           );
         }

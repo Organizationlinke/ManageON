@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:manageon/models/task_model.dart';
-import 'package:manageon/providers/task_provider.dart';
-import 'package:manageon/screens/tasks/task_detail_screen.dart';
+import 'package:manageon/taskes/models/task_model.dart';
+import 'package:manageon/taskes/providers/task_provider.dart';
+import 'package:manageon/taskes/screens/tasks/task_detail_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TaskCard extends ConsumerWidget {
