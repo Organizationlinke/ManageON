@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:manageon/station/reports/FarzaReport.dart';
 
 class ReportsDashboardScreen extends StatelessWidget {
-  final void Function(String reportKey)? onReportSelected;
 
-  const ReportsDashboardScreen({super.key, this.onReportSelected});
+
+  const ReportsDashboardScreen({super.key, });
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,38 @@ class ReportsDashboardScreen extends StatelessWidget {
                     final item = items[index];
                     return _ReportCard(
                       item: item,
-                      onTap: () => onReportSelected?.call(item.key),
+                   onTap: () {
+  Widget screen;
+
+  switch (item.key) {
+    case 'sorting':
+      screen = const FarzaReportScreen();
+      break;
+    case 'production':
+      screen = const FarzaReportScreen();
+      break;
+    case 'raw':
+      screen = const FarzaReportScreen();
+      break;
+    case 'sales':
+      screen = const FarzaReportScreen();
+      break;
+    case 'fridge':
+      screen = const FarzaReportScreen();
+      break;
+    case 'shipped':
+      screen = const FarzaReportScreen();
+      break;
+    default:
+      return;
+  }
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (_) => screen),
+  );
+},
+
                     );
                   },
                 ),
