@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manageon/station/reports/FarzaReport.dart';
+import 'package:manageon/station/reports/RawReport.dart';
 
 class ReportsDashboardScreen extends StatelessWidget {
 
@@ -51,19 +52,19 @@ class ReportsDashboardScreen extends StatelessWidget {
       screen = const FarzaReportScreen();
       break;
     case 'production':
-      screen = const FarzaReportScreen();
+      screen = Text('data');
       break;
     case 'raw':
-      screen = const FarzaReportScreen();
+      screen = const RawReportScreen();
       break;
     case 'sales':
-      screen = const FarzaReportScreen();
+     screen = Text('data');
       break;
     case 'fridge':
-      screen = const FarzaReportScreen();
+      screen = Text('data');
       break;
     case 'shipped':
-      screen = const FarzaReportScreen();
+      screen = Text('data');
       break;
     default:
       return;

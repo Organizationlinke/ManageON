@@ -909,7 +909,7 @@ class FarzaReportScreen extends StatefulWidget {
 class _FarzaReportScreenState extends State<FarzaReportScreen> {
   final supabase = Supabase.instance.client;
 
-  DateTime fromDate = DateTime(2025, 1, 1);
+  DateTime fromDate = DateTime(2025, 12, 1);
   DateTime toDate = DateTime.now();
   String? selectedCrop;
 
