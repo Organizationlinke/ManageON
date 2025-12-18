@@ -1010,7 +1010,7 @@ class _FarzaReportScreenState extends State<FarzaReportScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.grey[100],
-        appBar: AppBar(title: const Text('تقرير الفرزة المتقدم'), centerTitle: true),
+        appBar: AppBar(title: const Text('تقرير الفرزة'), centerTitle: true),
         body: Column(
           children: [
             _filtersSection(),

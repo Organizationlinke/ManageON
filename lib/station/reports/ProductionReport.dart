@@ -3,33 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class RawReportScreen extends StatefulWidget {
-  const RawReportScreen({super.key});
+class ProductionReportScreen extends StatefulWidget {
+  const ProductionReportScreen({super.key});
 
   @override
-  State<RawReportScreen> createState() => _FarzaReportScreenState();
+  State<ProductionReportScreen> createState() => _FarzaReportScreenState();
 }
 
-class _FarzaReportScreenState extends State<RawReportScreen> {
+class _FarzaReportScreenState extends State<ProductionReportScreen> {
   final supabase = Supabase.instance.client;
 
   DateTime fromDate = DateTime(2025, 12, 1);
   DateTime toDate = DateTime.now();
   String? selectedCrop;
+  String? selectedClass;
 
   // الخرائط لربط الاسم الإنجليزي (قاعدة البيانات) بالاسم العربي (العرض)
   final Map<String, String> textColumnsMap = {
     
-    'OprationDate': 'التاريخ',
-    'Serial':'علم الوزن',
-    'GroupSupplier':'المورد',
-    'VehicleNumber': 'رقم السيارة',
-    'DrvierName': 'اسم السائق',
+    'ProductionDate': 'التاريخ',
+    // 'Serial':'علم الوزن',
+    // 'GroupSupplier':'المورد',
+    // 'VehicleNumber': 'رقم السيارة',
+    // 'DrvierName': 'اسم السائق',
   };
 
   final Map<String, String> numericColumnsMap = {
-    'GrossWeight': 'الوزن القائم',
-    'EmpetyWeight': 'الوزن الفارغ',
+    'SalesPrice_FOB_EGP': 'الوزن القائم',
+    // 'EmpetyWeight': 'الوزن الفارغ',
   };
 
   List<String> selectedTextCols = [];
@@ -38,11 +39,13 @@ class _FarzaReportScreenState extends State<RawReportScreen> {
   List reportData = [];
   bool loading = false;
   List<String> cropList = [];
+  List<String> classList = [];
 
   @override
   void initState() {
     super.initState();
     loadCropNames();
+    loadClass();
     loadReport();
   }
 
@@ -58,12 +61,24 @@ class _FarzaReportScreenState extends State<RawReportScreen> {
 
   Future<void> loadCropNames() async {
     try {
-      final res = await supabase.from('Stations_RawTable').select('CropName');
+      final res = await supabase.from('Stations_ProductionCost').select('Items');
       final set = <String>{};
       for (final e in res) {
-        if (e['CropName'] != null) set.add(e['CropName']);
+        if (e['Items'] != null) set.add(e['Items']);
       }
       setState(() => cropList = set.toList()..sort());
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
+ Future<void> loadClass() async {
+    try {
+      final res = await supabase.from('Stations_ProductionCost').select('Class');
+      final set = <String>{};
+      for (final e in res) {
+        if (e['Class'] != null) set.add(e['Class']);
+      }
+      setState(() => classList = set.toList()..sort());
     } catch (e) {
       debugPrint('Error: $e');
     }
@@ -73,11 +88,12 @@ class _FarzaReportScreenState extends State<RawReportScreen> {
     setState(() => loading = true);
     try {
       final res = await supabase.rpc(
-        'get_raw_report',
+        'get_production_report',
         params: {
           'p_date_from': intl.DateFormat('yyyy-MM-dd').format(fromDate),
           'p_date_to': intl.DateFormat('yyyy-MM-dd').format(toDate),
           'p_crop_name': selectedCrop,
+          'p_crop_class': selectedClass,
           'p_group_columns': selectedTextCols,
           'p_sum_columns': selectedNumCols,
         },
@@ -96,8 +112,8 @@ class _FarzaReportScreenState extends State<RawReportScreen> {
     }
   }
 
-  num get totalNetWeight => reportData.fold(0, (s, e) => s + (e['NetWeight'] ?? 0));
-  num get totalValue => reportData.fold(0, (s, e) => s + (e['TotalValue'] ?? 0));
+  num get totalNetWeight => reportData.fold(0, (s, e) => s + (e['net_weight'] ?? 0));
+  num get totalValue => reportData.fold(0, (s, e) => s + (e['total_value'] ?? 0));
 
   num sumNumericColumn(String columnName) {
     if (reportData.isEmpty) return 0;
@@ -114,7 +130,7 @@ class _FarzaReportScreenState extends State<RawReportScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.grey[100],
-        appBar: AppBar(title: const Text('تقرير الخام'), centerTitle: true),
+        appBar: AppBar(title: const Text('تقرير الانتاج'), centerTitle: true),
         body: Column(
           children: [
             _filtersSection(),
@@ -153,6 +169,17 @@ class _FarzaReportScreenState extends State<RawReportScreen> {
                       ...cropList.map((c) => DropdownMenuItem(value: c, child: Text(c))),
                     ],
                     onChanged: (v) => setState(() => selectedCrop = v),
+                  ),
+                ),
+                  Expanded(
+                  child: DropdownButtonFormField<String?>(
+                    decoration: const InputDecoration(labelText: 'الدرجة', border: OutlineInputBorder()),
+                    value: selectedClass,
+                    items: [
+                      const DropdownMenuItem(value: null, child: Text('الكل')),
+                      ...classList.map((c) => DropdownMenuItem(value: c, child: Text(c))),
+                    ],
+                    onChanged: (v) => setState(() => selectedClass = v),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -222,6 +249,7 @@ class _FarzaReportScreenState extends State<RawReportScreen> {
               headingRowColor: MaterialStateProperty.all(Colors.grey[200]),
               columns: [
                 const DataColumn(label: Text('الصنف')),
+                const DataColumn(label: Text('الدرجة')),
                 const DataColumn(label: Text('الكمية')),
                 const DataColumn(label: Text('متوسط السعر')),
                 const DataColumn(label: Text('القيمة')),
@@ -234,28 +262,45 @@ class _FarzaReportScreenState extends State<RawReportScreen> {
                 ...reportData.map((row) {
                   final extra = row['extra_columns'] as Map<String, dynamic>? ?? {};
                   return DataRow(cells: [
-                    DataCell(Text(row['CropName'] ?? '')),
-                    DataCell(Text(formatNum(row['NetWeight']))),
-                    DataCell(Text(formatNum(row['AvgPrice']))),
-                    DataCell(Text(formatNum(row['TotalValue']))),
+                    DataCell(Text(row['crop_name'] ?? '')),
+                    DataCell(Text(row['class'] ?? '')),
+                    DataCell(Text(formatNum(row['net_weight']))),
+                    DataCell(Text(formatNum(row['avg_price']))),
+                    DataCell(Text(formatNum(row['total_value']))),
                     ...selectedTextCols.map((c) => DataCell(Text(extra[c]?.toString() ?? '-'))),
                     ...selectedNumCols.map((c) => DataCell(Text(formatNum(extra[c])))),
                   ]);
                 }),
                 DataRow(
-                  color: MaterialStateProperty.all(Colors.amber[50]),
-                  cells: [
-                    const DataCell(Text('الإجمالي', style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataCell(Text(formatNum(totalNetWeight), style: const TextStyle(fontWeight: FontWeight.bold))),
-                    DataCell(Text(formatNum(avgPrice), style: const TextStyle(fontWeight: FontWeight.bold))),
-                    DataCell(Text(formatNum(totalValue), style: const TextStyle(fontWeight: FontWeight.bold))),
-                    ...selectedTextCols.map((_) => const DataCell(Text(''))),
-                    ...selectedNumCols.map((c) => DataCell(Text(
-                          formatNum(sumNumericColumn(c)),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ))),
-                  ],
-                ),
+  color: MaterialStateProperty.all(Colors.amber[50]),
+  cells: [
+    const DataCell(Text('الإجمالي', style: TextStyle(fontWeight: FontWeight.bold))),
+    const DataCell(Text('-')), // ← الدرجة
+    DataCell(Text(formatNum(totalNetWeight), style: const TextStyle(fontWeight: FontWeight.bold))),
+    DataCell(Text(formatNum(avgPrice), style: const TextStyle(fontWeight: FontWeight.bold))),
+    DataCell(Text(formatNum(totalValue), style: const TextStyle(fontWeight: FontWeight.bold))),
+    ...selectedTextCols.map((_) => const DataCell(Text(''))),
+    ...selectedNumCols.map((c) => DataCell(
+          Text(formatNum(sumNumericColumn(c)),
+          style: const TextStyle(fontWeight: FontWeight.bold)),
+        )),
+  ],
+),
+
+                // DataRow(
+                //   color: MaterialStateProperty.all(Colors.amber[50]),
+                //   cells: [
+                //     const DataCell(Text('الإجمالي', style: TextStyle(fontWeight: FontWeight.bold))),
+                //     DataCell(Text(formatNum(totalNetWeight), style: const TextStyle(fontWeight: FontWeight.bold))),
+                //     DataCell(Text(formatNum(avgPrice), style: const TextStyle(fontWeight: FontWeight.bold))),
+                //     DataCell(Text(formatNum(totalValue), style: const TextStyle(fontWeight: FontWeight.bold))),
+                //     ...selectedTextCols.map((_) => const DataCell(Text(''))),
+                //     ...selectedNumCols.map((c) => DataCell(Text(
+                //           formatNum(sumNumericColumn(c)),
+                //           style: const TextStyle(fontWeight: FontWeight.bold),
+                //         ))),
+                //   ],
+                // ),
               ],
             ),
           ),
