@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ProductionReportScreen extends StatefulWidget {
-  const ProductionReportScreen({super.key});
+class SalesInvoiceReportScreen extends StatefulWidget {
+  const SalesInvoiceReportScreen({super.key});
 
   @override
-  State<ProductionReportScreen> createState() => _FarzaReportScreenState();
+  State<SalesInvoiceReportScreen> createState() => _FarzaReportScreenState();
 }
 
-class _FarzaReportScreenState extends State<ProductionReportScreen> {
+class _FarzaReportScreenState extends State<SalesInvoiceReportScreen> {
   final supabase = Supabase.instance.client;
 
   DateTime fromDate = DateTime(2025, 12, 1);
@@ -21,7 +21,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
   // الخرائط لربط الاسم الإنجليزي (قاعدة البيانات) بالاسم العربي (العرض)
   final Map<String, String> textColumnsMap = {
     
-    'ProductionDate': 'التاريخ',
+    'Invoice_Date': 'التاريخ',
     // 'Serial':'علم الوزن',
     // 'GroupSupplier':'المورد',
     // 'VehicleNumber': 'رقم السيارة',
@@ -61,7 +61,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
 
   Future<void> loadCropNames() async {
     try {
-      final res = await supabase.from('Stations_ProductionCost').select('Items');
+      final res = await supabase.from('Stations_SalesInvoice').select('Items');
       final set = <String>{};
       for (final e in res) {
         if (e['Items'] != null) set.add(e['Items']);
@@ -73,7 +73,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
   }
  Future<void> loadClass() async {
     try {
-      final res = await supabase.from('Stations_ProductionCost').select('Class');
+      final res = await supabase.from('Stations_SalesInvoice').select('Class');
       final set = <String>{};
       for (final e in res) {
         if (e['Class'] != null) set.add(e['Class']);
@@ -88,7 +88,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
     setState(() => loading = true);
     try {
       final res = await supabase.rpc(
-        'get_production_report',
+        'get_salesinvoice_report',
         params: {
           'p_date_from': intl.DateFormat('yyyy-MM-dd').format(fromDate),
           'p_date_to': intl.DateFormat('yyyy-MM-dd').format(toDate),
@@ -130,7 +130,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.grey[100],
-        appBar: AppBar(title: const Text('تقرير الانتاج'), centerTitle: true),
+        appBar: AppBar(title: const Text('تقرير المبيعات'), centerTitle: true),
         body: Column(
           children: [
             _filtersSection(),

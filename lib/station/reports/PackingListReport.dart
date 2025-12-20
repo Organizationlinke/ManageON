@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ProductionReportScreen extends StatefulWidget {
-  const ProductionReportScreen({super.key});
+class PackingListReportScreen extends StatefulWidget {
+  const PackingListReportScreen({super.key});
 
   @override
-  State<ProductionReportScreen> createState() => _FarzaReportScreenState();
+  State<PackingListReportScreen> createState() => _FarzaReportScreenState();
 }
 
-class _FarzaReportScreenState extends State<ProductionReportScreen> {
+class _FarzaReportScreenState extends State<PackingListReportScreen> {
   final supabase = Supabase.instance.client;
 
   DateTime fromDate = DateTime(2025, 12, 1);
@@ -61,7 +61,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
 
   Future<void> loadCropNames() async {
     try {
-      final res = await supabase.from('Stations_ProductionCost').select('Items');
+      final res = await supabase.from('Stations_PackingListsData').select('Items');
       final set = <String>{};
       for (final e in res) {
         if (e['Items'] != null) set.add(e['Items']);
@@ -73,7 +73,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
   }
  Future<void> loadClass() async {
     try {
-      final res = await supabase.from('Stations_ProductionCost').select('Class');
+      final res = await supabase.from('Stations_PackingListsData').select('Class');
       final set = <String>{};
       for (final e in res) {
         if (e['Class'] != null) set.add(e['Class']);
@@ -88,7 +88,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
     setState(() => loading = true);
     try {
       final res = await supabase.rpc(
-        'get_production_report',
+        'get_packinglist_report',
         params: {
           'p_date_from': intl.DateFormat('yyyy-MM-dd').format(fromDate),
           'p_date_to': intl.DateFormat('yyyy-MM-dd').format(toDate),
@@ -113,7 +113,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
   }
 
   num get totalNetWeight => reportData.fold(0, (s, e) => s + (e['net_weight'] ?? 0));
-  num get totalValue => reportData.fold(0, (s, e) => s + (e['total_value'] ?? 0));
+  // num get totalValue => reportData.fold(0, (s, e) => s + (e['total_value'] ?? 0));
 
   num sumNumericColumn(String columnName) {
     if (reportData.isEmpty) return 0;
@@ -130,7 +130,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.grey[100],
-        appBar: AppBar(title: const Text('تقرير الانتاج'), centerTitle: true),
+        appBar: AppBar(title: const Text('تقرير المشحون'), centerTitle: true),
         body: Column(
           children: [
             _filtersSection(),
@@ -211,7 +211,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
         children: [
           _cardInfo('إجمالي الكمية', formatNum(totalNetWeight), Colors.blue),
           const SizedBox(width: 8),
-          _cardInfo('إجمالي القيمة', formatNum(totalValue), Colors.green),
+          // _cardInfo('إجمالي القيمة', formatNum(totalValue), Colors.green),
         ],
       ),
     );
@@ -236,7 +236,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
 
   Widget _tableSection() {
     if (reportData.isEmpty) return const Center(child: Text('لا توجد بيانات متاحة'));
-    final avgPrice = totalNetWeight == 0 ? 0 : totalValue / totalNetWeight;
+    // final avgPrice = totalNetWeight == 0 ? 0 : totalValue / totalNetWeight;
 
     return Card(
       margin: const EdgeInsets.all(12),
@@ -251,8 +251,8 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
                 const DataColumn(label: Text('الصنف')),
                 const DataColumn(label: Text('الدرجة')),
                 const DataColumn(label: Text('الكمية')),
-                const DataColumn(label: Text('متوسط السعر')),
-                const DataColumn(label: Text('القيمة')),
+                // const DataColumn(label: Text('متوسط السعر')),
+                // const DataColumn(label: Text('القيمة')),
                 // جلب الاسم العربي للأعمدة النصية المختارة
                 ...selectedTextCols.map((c) => DataColumn(label: Text(textColumnsMap[c] ?? c))),
                 // جلب الاسم العربي للأعمدة الرقمية المختارة
@@ -265,8 +265,8 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
                     DataCell(Text(row['crop_name'] ?? '')),
                     DataCell(Text(row['class'] ?? '')),
                     DataCell(Text(formatNum(row['net_weight']))),
-                    DataCell(Text(formatNum(row['avg_price']))),
-                    DataCell(Text(formatNum(row['total_value']))),
+                    // DataCell(Text(formatNum(row['avg_price']))),
+                    // DataCell(Text(formatNum(row['total_value']))),
                     ...selectedTextCols.map((c) => DataCell(Text(extra[c]?.toString() ?? '-'))),
                     ...selectedNumCols.map((c) => DataCell(Text(formatNum(extra[c])))),
                   ]);
@@ -277,8 +277,8 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
     const DataCell(Text('الإجمالي', style: TextStyle(fontWeight: FontWeight.bold))),
     const DataCell(Text('-')), // ← الدرجة
     DataCell(Text(formatNum(totalNetWeight), style: const TextStyle(fontWeight: FontWeight.bold))),
-    DataCell(Text(formatNum(avgPrice), style: const TextStyle(fontWeight: FontWeight.bold))),
-    DataCell(Text(formatNum(totalValue), style: const TextStyle(fontWeight: FontWeight.bold))),
+    // DataCell(Text(formatNum(avgPrice), style: const TextStyle(fontWeight: FontWeight.bold))),
+    // DataCell(Text(formatNum(totalValue), style: const TextStyle(fontWeight: FontWeight.bold))),
     ...selectedTextCols.map((_) => const DataCell(Text(''))),
     ...selectedNumCols.map((c) => DataCell(
           Text(formatNum(sumNumericColumn(c)),

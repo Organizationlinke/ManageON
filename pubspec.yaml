@@ -61,6 +61,7 @@ dependencies:
   flutter_riverpod: ^2.5.1 # لإدارة الحالة
   
   fl_chart: ^0.67.0 # للرسوم البيانية
+  google_fonts: ^4.0.4
 
 
 dev_dependencies:
