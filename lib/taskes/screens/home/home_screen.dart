@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manageon/global.dart';
 import 'package:manageon/taskes/providers/app_state_provider.dart';
-import 'package:manageon/taskes/screens/auth/login_screen.dart';
+import 'package:manageon/login_screen.dart';
 import 'package:manageon/taskes/screens/profile/user_profile_screen.dart';
 import 'package:manageon/taskes/screens/tasks/tasks_screen.dart';
 import 'package:manageon/taskes/screens/team/team_screen.dart';

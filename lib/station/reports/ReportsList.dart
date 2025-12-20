@@ -372,7 +372,7 @@ class ReportsDashboardScreen extends StatelessWidget {
       _ReportItem('تقرير المبيعات', Icons.analytics_rounded, 'sales', Colors.purple),
       _ReportItem('رصيد الثلاجة', Icons.ac_unit_rounded, 'fridge', Colors.cyan),
       _ReportItem('تقرير المشحون', Icons.local_shipping_rounded, 'shipped', Colors.indigo),
-        _ReportItem('تقرير 22المشحون', Icons.local_shipping_rounded, 'shippe2d', Colors.indigo),
+        _ReportItem('تقرير التشغيل', Icons.analytics, 'operation', Colors.indigo),
     ];
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -478,7 +478,7 @@ class ReportsDashboardScreen extends StatelessWidget {
       case 'shipped':
         screen = PackingListReportScreen();
         break;
-        case 'shippe2d':
+        case 'operation':
         screen = CropReportScreen();
         break;
       default:
