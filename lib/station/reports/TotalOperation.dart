@@ -640,29 +640,32 @@ class _CropReportScreenState extends State<CropReportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("تقارير الأصناف المتقدمة"),
-        centerTitle: true,
-      ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              _buildFilters(),
-              const SizedBox(height: 20),
-              if (isLoading)
-                const CircularProgressIndicator()
-              else ...[
-                _buildReportSection("1. تقرير المواد الخام", rawReport, type: 'raw'),
-                const SizedBox(height: 16),
-                _buildReportSection("2. تقرير الفرزة", farzaReport, type: 'farza'),
-                const SizedBox(height: 16),
-                _buildReportSection("3. تقرير الإنتاج", productionReport, type: 'prod'),
+    return Directionality(
+      textDirection:TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("تقارير الأصناف المتقدمة"),
+          centerTitle: true,
+        ),
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                _buildFilters(),
+                const SizedBox(height: 20),
+                if (isLoading)
+                  const CircularProgressIndicator()
+                else ...[
+                  _buildReportSection("1. تقرير المواد الخام", rawReport, type: 'raw'),
+                  const SizedBox(height: 16),
+                  _buildReportSection("2. تقرير الفرزة", farzaReport, type: 'farza'),
+                  const SizedBox(height: 16),
+                  _buildReportSection("3. تقرير الإنتاج", productionReport, type: 'prod'),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
