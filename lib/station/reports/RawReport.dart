@@ -84,6 +84,9 @@ class _FarzaReportScreenState extends State<RawReportScreen> {
       );
       setState(() {
         reportData = List.from(res);
+        //  ..sort((a, b) =>
+        // DateTime.parse(a['OprationDate'])
+        //     .compareTo(DateTime.parse(b['OprationDate'])));
         loading = false;
       });
     } catch (e) {
