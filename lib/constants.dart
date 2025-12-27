@@ -3,8 +3,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 // استبدل هذه القيم بالقيم الحقيقية من مشروع Supabase الخاص بك
 
-const String SUPABASE_URL ='https://xqrkwvakkvihaeujnuvh.supabase.co';
-const String SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhxcmt3dmFra3ZpaGFldWpudXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1ODYwMzcsImV4cCI6MjA3ODE2MjAzN30.v27FN2Q7zTJetGRCeEw7s6epc3pPoVDNFpxK3NuOWJU';
+const String SUPABASE_URL ='https://desuoranpsjltjthfosv.supabase.co';
+const String SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRlc3VvcmFucHNqbHRqdGhmb3N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MjY0OTQsImV4cCI6MjA4MjQwMjQ5NH0.svrdVLKrlaQiV33oL9OZvD-crU672VqEXkJnYXUX380';
 
 // للوصول السريع للعميل
 final supabase = Supabase.instance.client;
