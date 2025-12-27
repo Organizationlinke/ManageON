@@ -95173,7 +95173,7 @@ this.au()},
 F(a){var s,r,q=this,p=null,o=t.p,n=A.a([A.c2(A.a([A.Q(A.k(J.V(q.a.c,"fault_type"))+" - "+A.k(J.V(q.a.c,"line")),p,p,p,p,B.a3,p,p),A.Q(q.e,p,p,p,p,B.ab3,p,p)],o),B.m,B.ed,B.p,p)],o)
 if(q.f){s=q.r
 r=t.fo
-B.b.G(n,A.a([A.h_(B.SG,A.a3(new A.J(A.a(["\u0627\u0644\u0625\u0646\u062a\u0627\u062c","\u0627\u0644\u0635\u064a\u0627\u0646\u0629","\u0627\u0644\u062c\u0648\u062f\u0629"],t.s),new A.azO(),r),!0,r.i("aA.E")),new A.azP(q),p,s,t.N),A.TR(!0,B.cW,!1,p,!0,B.L,p,A.aKd(),q.w,p,p,p,p,p,2,B.SF,B.G,!0,p,!0,p,!1,p,B.d3,p,p,p,p,p,p,p,1,p,p,!1,"\u2022",p,p,p,p,p,!1,p,!1,p,!0,p,B.eZ,p,p,B.cN,B.ci,p,p,p,p,p,p,p,B.aN,p,B.id,p,p,p,p),A.iJ(!1,B.afB,p,p,B.b1,p,p,p,p,new A.azQ(q),p,p)],o))}else{o=A.Q("\u0627\u0644\u0625\u062f\u0627\u0631\u0629: "+A.k(J.V(q.a.c,"department")),p,p,p,p,p,p,p)
+B.b.G(n,A.a([A.h_(B.SG,A.a3(new A.J(A.a(["\u0627\u0644\u0625\u0646\u062a\u0627\u062c","\u0627\u0644\u0635\u064a\u0627\u0646\u0629","\u0627\u0644\u0645\u062e\u0627\u0632\u0646","\u0627\u0644\u062c\u0648\u062f\u0629"],t.s),new A.azO(),r),!0,r.i("aA.E")),new A.azP(q),p,s,t.N),A.TR(!0,B.cW,!1,p,!0,B.L,p,A.aKd(),q.w,p,p,p,p,p,2,B.SF,B.G,!0,p,!0,p,!1,p,B.d3,p,p,p,p,p,p,p,1,p,p,!1,"\u2022",p,p,p,p,p,!1,p,!1,p,!0,p,B.eZ,p,p,B.cN,B.ci,p,p,p,p,p,p,p,B.aN,p,B.id,p,p,p,p),A.iJ(!1,B.afB,p,p,B.b1,p,p,p,p,new A.azQ(q),p,p)],o))}else{o=A.Q("\u0627\u0644\u0625\u062f\u0627\u0631\u0629: "+A.k(J.V(q.a.c,"department")),p,p,p,p,p,p,p)
 n.push(A.CI(!1,p,p,p,!0,p,!1,p,p,p,!1,p,p,p,A.Q("\u0627\u0644\u0633\u0628\u0628: "+A.k(J.V(q.a.c,"reason")),p,p,p,p,p,p,p),p,o,A.lb(p,B.So,p,new A.azR(q),p,p),p))}n.push(A.ie(B.afo,new A.azS(q),A.qT(p,p,B.cB,p,p,p,p,p,p,B.k,p,B.a9E,p,p,p,p,p,p,p)))
 return A.dS(new A.aK(B.az,A.bs(n,B.m,B.n,B.p),p),p,p,B.QR,p)}}
 A.azJ.prototype={
