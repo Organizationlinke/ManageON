@@ -155,6 +155,7 @@ class _FaultLineViewState extends State<FaultLineView> {
         });
         _fetchActiveFaults();
       } catch (e) {
+        print('error :$e');
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('خطأ في الاتصال')));
       }
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manageon/station/Operation/OperationApp.dart';
 import 'package:manageon/station/Operation/faults_page.dart';
 import 'package:manageon/station/reports/ReportsList.dart';
 import 'package:manageon/taskes/screens/home/home_screen.dart';
@@ -65,7 +66,14 @@ class MainFiltersScreen extends StatelessWidget {
                       title: "الجودة",
                       icon: Icons.verified,
                       color: Colors.green,
-                      onTap: () {},
+                      onTap: () {
+                         Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     const OperationApp()
+                                 
+                          ));
+                      },
                     ),
                   ),
                   const SizedBox(width: 20),
