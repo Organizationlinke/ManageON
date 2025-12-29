@@ -22,10 +22,10 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
   final Map<String, String> textColumnsMap = {
     
     'ProductionDate': 'التاريخ',
-    // 'Serial':'علم الوزن',
-    // 'GroupSupplier':'المورد',
-    // 'VehicleNumber': 'رقم السيارة',
-    // 'DrvierName': 'اسم السائق',
+     'ItemsCount':'الحجم',
+    'CTNType':'نوع الكرتون',
+    'CTNWeight': 'وزن الكرتون',
+    'Brand': 'الماركه',
   };
 
   final Map<String, String> numericColumnsMap = {
