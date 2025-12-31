@@ -26,6 +26,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
     'CTNType':'نوع الكرتون',
     'CTNWeight': 'وزن الكرتون',
     'Brand': 'الماركه',
+    'CustomerName': 'العميل',
   };
 
   final Map<String, String> numericColumnsMap = {
