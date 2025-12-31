@@ -97112,7 +97112,7 @@ a1(){var s,r,q=$.dW().b
 q===$&&A.b()
 s=t.N
 r=t.s
-return new A.HA(q,A.bm(2025,12,1,0,0,0,0,0),new A.b9(Date.now(),0,!1),A.ad(["ProductionDate","\u0627\u0644\u062a\u0627\u0631\u064a\u062e","ItemsCount","\u0627\u0644\u062d\u062c\u0645","CTNType","\u0646\u0648\u0639 \u0627\u0644\u0643\u0631\u062a\u0648\u0646","CTNWeight","\u0648\u0632\u0646 \u0627\u0644\u0643\u0631\u062a\u0648\u0646","Brand","\u0627\u0644\u0645\u0627\u0631\u0643\u0647","CustomerName","\u0627\u0644\u0639\u0645\u064a\u0644"],s,s),A.ad(["PalletCount","\u0639\u062f\u062f \u0627\u0644\u0628\u0627\u0644\u062a\u0627\u062a"],s,s),A.a([],r),A.a([],r),[],A.a([],r),A.a([],r))}}
+return new A.HA(q,A.bm(2025,12,1,0,0,0,0,0),new A.b9(Date.now(),0,!1),A.ad(["ProductionDate","\u0627\u0644\u062a\u0627\u0631\u064a\u062e","ItemsCount","\u0627\u0644\u062d\u062c\u0645","CTNType","\u0646\u0648\u0639 \u0627\u0644\u0643\u0631\u062a\u0648\u0646","CTNWeight","\u0648\u0632\u0646 \u0627\u0644\u0643\u0631\u062a\u0648\u0646","Brand","\u0627\u0644\u0645\u0627\u0631\u0643\u0647","CustomerName","\u0627\u0644\u0639\u0645\u064a\u0644","Order_Number","\u0631\u0642\u0645 \u0627\u0644\u0627\u0648\u0631\u062f\u0631"],s,s),A.ad(["PalletCount","\u0639\u062f\u062f \u0627\u0644\u0628\u0627\u0644\u062a\u0627\u062a"],s,s),A.a([],r),A.a([],r),[],A.a([],r),A.a([],r))}}
 A.HA.prototype={
 ad(){var s=this
 s.av()
