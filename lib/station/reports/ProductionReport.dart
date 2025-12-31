@@ -30,7 +30,7 @@ class _FarzaReportScreenState extends State<ProductionReportScreen> {
   };
 
   final Map<String, String> numericColumnsMap = {
-    'SalesPrice_FOB_EGP': 'الوزن القائم',
+    'PalletCount': 'عدد البالتات',
     // 'EmpetyWeight': 'الوزن الفارغ',
   };
 
