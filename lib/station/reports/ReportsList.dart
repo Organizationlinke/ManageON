@@ -354,6 +354,7 @@ import 'package:flutter/material.dart';
 import 'package:manageon/station/reports/ColdStorReport.dart';
 import 'package:manageon/station/reports/FarzaReport.dart';
 import 'package:manageon/station/reports/PackingListReport.dart';
+import 'package:manageon/station/reports/PlanningReport.dart';
 import 'package:manageon/station/reports/ProductionReport.dart';
 import 'package:manageon/station/reports/RawReport.dart';
 import 'package:manageon/station/reports/SalesInvoiceReport.dart';
@@ -373,6 +374,7 @@ class ReportsDashboardScreen extends StatelessWidget {
       _ReportItem('رصيد الثلاجة', Icons.ac_unit_rounded, 'fridge', Colors.cyan),
       _ReportItem('تقرير المشحون', Icons.local_shipping_rounded, 'shipped', Colors.indigo),
         _ReportItem('تقرير التشغيل', Icons.analytics, 'operation', Colors.indigo),
+       _ReportItem('تقرير التخطيط', Icons.analytics, 'Planning', Colors.indigo),
     ];
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -480,6 +482,9 @@ class ReportsDashboardScreen extends StatelessWidget {
         break;
         case 'operation':
         screen = CropReportScreen();
+        break;
+          case 'Planning':
+        screen = PlanninReportScreen();
         break;
       default:
         return;
