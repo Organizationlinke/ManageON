@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manageon/Vodavon/VodafoneCash.dart';
 import 'package:manageon/station/Operation/OperationApp.dart';
 import 'package:manageon/station/Operation/faults_page.dart';
 import 'package:manageon/station/reports/ReportsList.dart';
@@ -87,6 +88,22 @@ class MainFiltersScreen extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) =>
                                      const ReportsDashboardScreen()
+                                 
+                          ));
+                      },
+                    ),
+                  ),
+                   const SizedBox(width: 20),
+                  Expanded(
+                    child: _buildMainButton(
+                      title: "فودافون كاش",
+                      icon: Icons.bar_chart,
+                      color: Colors.purple,
+                      onTap: () {
+                                 Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     const VodafoneCashApp()
                                  
                           ));
                       },
