@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manageon/Vodavon/VodafoneCash.dart';
+import 'package:manageon/station/Operation/MainOperation.dart';
 import 'package:manageon/station/Operation/OperationApp.dart';
 import 'package:manageon/station/Operation/faults_page.dart';
 import 'package:manageon/station/reports/ReportsList.dart';
@@ -12,7 +13,7 @@ class MainFiltersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("الفلاتر"),
+        title: const Text("Manage ON"),
         centerTitle: true,
       ),
       body: Padding(
@@ -49,7 +50,8 @@ class MainFiltersScreen extends StatelessWidget {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) =>
-                                      FaultLoggingApp()
+                                MainOperation()
+                                      // FaultLoggingApp()
                                  
                           ));
                       },

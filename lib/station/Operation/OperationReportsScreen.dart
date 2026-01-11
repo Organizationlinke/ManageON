@@ -683,7 +683,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({super.key});
@@ -859,164 +859,167 @@ class _ReportsScreenState extends State<ReportsScreen> {
   Widget build(BuildContext context) {
     final totals = _calculateTotals();
     
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('تقرير الأداء اليومي الذكي'),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          // فلاتر البحث
-          Container(
-            padding: const EdgeInsets.all(12),
-            color: Colors.blueGrey[50],
-            child: Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField<String>(
-                    value: _selectedLine,
-                    decoration: const InputDecoration(
-                      labelText: 'فلترة حسب الخط',
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('تقرير الأداء اليومي الذكي'),
+          centerTitle: true,
+        ),
+        body: Column(
+          children: [
+            // فلاتر البحث
+            Container(
+              padding: const EdgeInsets.all(12),
+              color: Colors.blueGrey[50],
+              child: Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      value: _selectedLine,
+                      decoration: const InputDecoration(
+                        labelText: 'فلترة حسب الخط',
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      ),
+                      items: _lines.map((l) => DropdownMenuItem(value: l, child: Text(l))).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _selectedLine = val!;
+                          // فلترة البيانات الموجودة بالفعل لتحسين السرعة عند تغيير الخط
+                          _fetchDailyReport(); 
+                        });
+                      },
                     ),
-                    items: _lines.map((l) => DropdownMenuItem(value: l, child: Text(l))).toList(),
-                    onChanged: (val) {
-                      setState(() {
-                        _selectedLine = val!;
-                        // فلترة البيانات الموجودة بالفعل لتحسين السرعة عند تغيير الخط
-                        _fetchDailyReport(); 
-                      });
+                  ),
+                  const SizedBox(width: 10),
+                  InkWell(
+                    onTap: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: _selectedDate,
+                        firstDate: DateTime(2022),
+                        lastDate: DateTime.now(),
+                      );
+                      if (picked != null) {
+                        setState(() => _selectedDate = picked);
+                        _fetchDailyReport();
+                      }
                     },
-                  ),
-                ),
-                const SizedBox(width: 10),
-                InkWell(
-                  onTap: () async {
-                    final picked = await showDatePicker(
-                      context: context,
-                      initialDate: _selectedDate,
-                      firstDate: DateTime(2022),
-                      lastDate: DateTime.now(),
-                    );
-                    if (picked != null) {
-                      setState(() => _selectedDate = picked);
-                      _fetchDailyReport();
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(4),
-                      color: Colors.white
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.calendar_today, size: 18),
-                        const SizedBox(width: 8),
-                        Text(DateFormat('yyyy-MM-dd').format(_selectedDate)),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          
-          Expanded(
-            child: _isLoading 
-              ? const Center(child: CircularProgressIndicator())
-              : _filteredData.isEmpty 
-                ? const Center(child: Text('لا توجد بيانات لهذا اليوم'))
-                : RefreshIndicator(
-                    onRefresh: _fetchDailyReport,
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(4),
+                        color: Colors.white
+                      ),
+                      child: Row(
                         children: [
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-                              headingRowColor: WidgetStateProperty.all(Colors.blueGrey[100]),
-                              columnSpacing: 20,
-                              columns: const [
-                                DataColumn(label: Text('السيريال')),
-                                DataColumn(label: Text('الخط')),
-                                DataColumn(label: Text('الصناديق')),
-                                DataColumn(label: Text('م. السرعة')), // مضاف في مكانه المنطقي
-                                DataColumn(label: Text('البدء')),
-                                DataColumn(label: Text('الانتهاء')),
-                                DataColumn(label: Text('إجمالي المدة')),
-                                DataColumn(label: Text('الأعطال')),
-                                DataColumn(label: Text('صافي المدة')),
-                                DataColumn(label: Text('المتوقع')),
-                                DataColumn(label: Text('الفرق')),
-                              ],
-                              rows: [
-                                ..._filteredData.map((data) {
-                                  int diffValue = data['diff'];
-                                  return DataRow(cells: [
-                                    DataCell(Text(data['serial'].toString())),
-                                    DataCell(Text(data['line'])),
-                                    DataCell(Text(data['boxes'].toString())),
-                                    // عمود متوسط السرعة المضاف حديثاً
-                                    DataCell(Text(data['avg_speed'].toStringAsFixed(2), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue))),
-                                    DataCell(Text(DateFormat.jm().format(data['start']))),
-                                    DataCell(Text(DateFormat.jm().format(data['end']))),
-                                    DataCell(Text('${data['total_dur']} د')),
-                                    DataCell(Text('${data['faults']} د', style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold))),
-                                    DataCell(Text('${data['net_dur']} د')),
-                                    DataCell(Text('${data['expected']} د')),
-                                    DataCell(Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                      decoration: BoxDecoration(
-                                        color: diffValue < 0 ? Colors.red[50] : Colors.green[50],
-                                        borderRadius: BorderRadius.circular(5)
-                                      ),
-                                      child: Text(
-                                        '${diffValue > 0 ? "+" : ""}$diffValue د', 
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold, 
-                                          color: diffValue < 0 ? Colors.red[900] : Colors.green[900]
-                                        ),
-                                      ),
-                                    )),
-                                  ]);
-                                }),
-                                // صف الإجماليات بنفس الترتيب
-                                DataRow(
-                                  color: WidgetStateProperty.all(Colors.blueGrey[50]),
-                                  cells: [
-                                    const DataCell(Text('المجموع', style: TextStyle(fontWeight: FontWeight.bold))),
-                                    const DataCell(Text('-')),
-                                    DataCell(Text(totals['boxes'].toString(), style: const TextStyle(fontWeight: FontWeight.bold))),
-                                    DataCell(Text(totals['avg_speed'].toStringAsFixed(2), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue))),
-                                    const DataCell(Text('-')),
-                                    const DataCell(Text('-')),
-                                    DataCell(Text('${totals['total_dur']} د', style: const TextStyle(fontWeight: FontWeight.bold))),
-                                    DataCell(Text('${totals['faults']} د', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red))),
-                                    DataCell(Text('${totals['net_dur']} د', style: const TextStyle(fontWeight: FontWeight.bold))),
-                                    DataCell(Text('${totals['expected']} د', style: const TextStyle(fontWeight: FontWeight.bold))),
-                                    DataCell(Text(
-                                      '${totals['diff']} د', 
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold, 
-                                        color: (totals['diff'] as int) < 0 ? Colors.red : Colors.green[800]
-                                      )
-                                    )),
-                                  ]
-                                )
-                              ],
-                            ),
-                          ),
+                          const Icon(Icons.calendar_today, size: 18),
+                          const SizedBox(width: 8),
+                          Text(intl.DateFormat('yyyy-MM-dd').format(_selectedDate)),
                         ],
                       ),
                     ),
-                  ),
-          ),
-        ],
+                  )
+                ],
+              ),
+            ),
+            
+            Expanded(
+              child: _isLoading 
+                ? const Center(child: CircularProgressIndicator())
+                : _filteredData.isEmpty 
+                  ? const Center(child: Text('لا توجد بيانات لهذا اليوم'))
+                  : RefreshIndicator(
+                      onRefresh: _fetchDailyReport,
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: DataTable(
+                                headingRowColor: WidgetStateProperty.all(Colors.blueGrey[100]),
+                                columnSpacing: 20,
+                                columns: const [
+                                  DataColumn(label: Text('السيريال')),
+                                  DataColumn(label: Text('الخط')),
+                                  DataColumn(label: Text('الصناديق')),
+                                  DataColumn(label: Text('م. السرعة')), // مضاف في مكانه المنطقي
+                                  DataColumn(label: Text('البدء')),
+                                  DataColumn(label: Text('الانتهاء')),
+                                  DataColumn(label: Text('إجمالي المدة')),
+                                  DataColumn(label: Text('الأعطال')),
+                                  DataColumn(label: Text('صافي المدة')),
+                                  DataColumn(label: Text('المتوقع')),
+                                  DataColumn(label: Text('الفرق')),
+                                ],
+                                rows: [
+                                  ..._filteredData.map((data) {
+                                    int diffValue = data['diff'];
+                                    return DataRow(cells: [
+                                      DataCell(Text(data['serial'].toString())),
+                                      DataCell(Text(data['line'])),
+                                      DataCell(Text(data['boxes'].toString())),
+                                      // عمود متوسط السرعة المضاف حديثاً
+                                      DataCell(Text(data['avg_speed'].toStringAsFixed(2), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue))),
+                                      DataCell(Text(intl.DateFormat.jm().format(data['start']))),
+                                      DataCell(Text(intl.DateFormat.jm().format(data['end']))),
+                                      DataCell(Text('${data['total_dur']} د')),
+                                      DataCell(Text('${data['faults']} د', style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold))),
+                                      DataCell(Text('${data['net_dur']} د')),
+                                      DataCell(Text('${data['expected']} د')),
+                                      DataCell(Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: diffValue < 0 ? Colors.red[50] : Colors.green[50],
+                                          borderRadius: BorderRadius.circular(5)
+                                        ),
+                                        child: Text(
+                                          '${diffValue > 0 ? "+" : ""}$diffValue د', 
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold, 
+                                            color: diffValue < 0 ? Colors.red[900] : Colors.green[900]
+                                          ),
+                                        ),
+                                      )),
+                                    ]);
+                                  }),
+                                  // صف الإجماليات بنفس الترتيب
+                                  DataRow(
+                                    color: WidgetStateProperty.all(Colors.blueGrey[50]),
+                                    cells: [
+                                      const DataCell(Text('المجموع', style: TextStyle(fontWeight: FontWeight.bold))),
+                                      const DataCell(Text('-')),
+                                      DataCell(Text(totals['boxes'].toString(), style: const TextStyle(fontWeight: FontWeight.bold))),
+                                      DataCell(Text(totals['avg_speed'].toStringAsFixed(2), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue))),
+                                      const DataCell(Text('-')),
+                                      const DataCell(Text('-')),
+                                      DataCell(Text('${totals['total_dur']} د', style: const TextStyle(fontWeight: FontWeight.bold))),
+                                      DataCell(Text('${totals['faults']} د', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red))),
+                                      DataCell(Text('${totals['net_dur']} د', style: const TextStyle(fontWeight: FontWeight.bold))),
+                                      DataCell(Text('${totals['expected']} د', style: const TextStyle(fontWeight: FontWeight.bold))),
+                                      DataCell(Text(
+                                        '${totals['diff']} د', 
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold, 
+                                          color: (totals['diff'] as int) < 0 ? Colors.red : Colors.green[800]
+                                        )
+                                      )),
+                                    ]
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
