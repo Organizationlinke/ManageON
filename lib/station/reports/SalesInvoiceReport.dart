@@ -387,6 +387,7 @@ class _SalesInvoiceReportScreenState extends State<SalesInvoiceReportScreen> {
     'CTNType': 'نوع الكرتون',
     'CTNWeight': 'وزن الكرتون',
     'Brand': 'الماركه',
+    'Country':'الدولة',
     'CustomerName': 'العميل',
   };
 

@@ -1948,7 +1948,7 @@ class _CropReportScreenState extends State<CropReportScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("تقارير الأصناف المتقدمة"),
+          title: const Text("تقرير نتيجة الاعمال الاجمالي"),
           centerTitle: true,
           actions: [
             IconButton(

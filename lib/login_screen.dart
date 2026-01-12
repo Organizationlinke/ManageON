@@ -6,6 +6,7 @@ import 'package:manageon/constants.dart'; // تأكد أن هذا الملف م�
 import 'package:manageon/mainhome.dart';
 import 'package:manageon/station/Operation/OperationApp.dart';
 import 'package:manageon/station/Operation/faults_page.dart';
+import 'package:manageon/station/reports/ReportsList.dart';
 import 'package:manageon/taskes/models/user_model.dart';
 import 'package:manageon/taskes/providers/app_state_provider.dart';
 import 'package:manageon/taskes/screens/home/home_screen.dart';
@@ -86,7 +87,7 @@ user_level=response["level"];
             MaterialPageRoute(builder: (context) =>
             //  const HomeScreen()
            user_level==0?  MainFiltersScreen():user_level==10?FaultLoggingApp():user_level==11?
-           OperationApp():user_level==12||user_level==13?VodafoneCashApp():HomeScreen()
+           OperationApp():user_level==12||user_level==13?VodafoneCashApp():user_level==14?ReportsDashboardScreen():HomeScreen()
              ),
           );
         }

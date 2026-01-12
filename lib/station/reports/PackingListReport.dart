@@ -387,6 +387,7 @@ class _PackingListReportScreenState extends State<PackingListReportScreen> {
     'CTNWeight': 'وزن الكرتون',
     'Brand': 'الماركه',
     'CustomerName': 'العميل',
+    'Country':'الدوله'
   };
 
   final Map<String, String> numericColumnsMap = {

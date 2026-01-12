@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:manageon/Vodavon/VodafoneCash.dart';
 import 'package:manageon/station/Operation/MainOperation.dart';
 import 'package:manageon/station/Operation/OperationApp.dart';
-import 'package:manageon/station/Operation/faults_page.dart';
 import 'package:manageon/station/reports/ReportsList.dart';
 import 'package:manageon/taskes/screens/home/home_screen.dart';
 

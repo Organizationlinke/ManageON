@@ -1304,31 +1304,100 @@ class _ProductionReportScreenState extends State<ProductionReportScreen> {
     );
   }
 
+  // List<PieChartSectionData> _buildChartSections() {
+  //   final List<Color> colors = [
+  //     Colors.blue, Colors.red, Colors.green, Colors.orange, 
+  //     Colors.purple, Colors.teal, Colors.amber, Colors.indigo
+  //   ];
+    
+  //   double total = countryChartData.values.reduce((a, b) => a + b);
+  //   int index = 0;
+    
+  //   return countryChartData.entries.map((e) {
+  //     final color = colors[index % colors.length];
+  //     final double percentage = (e.value / total) * 100;
+  //     index++;
+      
+  //     return PieChartSectionData(
+  //       color: color,
+  //       value: e.value,
+  //       title: '${percentage.toStringAsFixed(1)}%',
+  //       radius: 80, // نصف القطر لإعطاء مظهر عريض
+  //       titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+  //       // إضافة تدرج لوني خفيف لمحاكاة الأبعاد
+  //       badgeWidget: _badge(color),
+  //       badgePositionPercentageOffset: 0.98,
+  //     );
+  //   }).toList();
+  // }
   List<PieChartSectionData> _buildChartSections() {
     final List<Color> colors = [
-      Colors.blue, Colors.red, Colors.green, Colors.orange, 
+      Colors.blue, Colors.red, Colors.green, Colors.orange,
       Colors.purple, Colors.teal, Colors.amber, Colors.indigo
     ];
-    
+
     double total = countryChartData.values.reduce((a, b) => a + b);
     int index = 0;
-    
+
+    // حساب الزوايا التراكمية لوضع النص في منتصف كل قسم
+    double cumulativeValue = 0;
+
     return countryChartData.entries.map((e) {
       final color = colors[index % colors.length];
       final double percentage = (e.value / total) * 100;
-      index++;
       
+      // حساب زاوية منتصف القسم الحالي (بالدرجات)
+      // نبدأ من -90 (أعلى الدائرة) كما هو محدد في startDegreeOffset
+      final double sectionCenterValue = cumulativeValue + (e.value / 2);
+      final double sectionCenterDegrees = (sectionCenterValue / total) * 360 - 90;
+      
+      cumulativeValue += e.value;
+      index++;
+
       return PieChartSectionData(
         color: color,
         value: e.value,
-        title: '${percentage.toStringAsFixed(1)}%',
-        radius: 80, // نصف القطر لإعطاء مظهر عريض
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
-        // إضافة تدرج لوني خفيف لمحاكاة الأبعاد
-        badgeWidget: _badge(color),
-        badgePositionPercentageOffset: 0.98,
+        title: '', // نترك العنوان فارغاً لأننا سنستخدم badgeWidget للتحكم الكامل
+        radius: 70,
+        badgeWidget: _buildRotatedLabel(e.key, percentage, sectionCenterDegrees, color),
+        badgePositionPercentageOffset: 1.2, // وضع النص خارج حدود الدائرة قليلاً لمنع التداخل
       );
     }).toList();
+  }
+
+  // دالة لبناء الملصق المائل بزاوية 90 درجة عمودياً على قطر الدائرة
+  Widget _buildRotatedLabel(String country, double percentage, double angleDegrees, Color color) {
+    // الزاوية هنا تجعل النص "عمودياً" بالنسبة لمركز الدائرة
+    // نحول الدرجات إلى راديان
+    final double angleRadian = (angleDegrees * 3.1415926535897932) / 180;
+
+    return Transform.rotate(
+      angle: angleRadian + (3.1415926535897932 / 2), // إضافة 90 درجة ليكون عمودياً على القطر
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              country,
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: Colors.amber, // جعل لون النص أغمق قليلاً من القسم ليكون واضحاً
+              ),
+            ),
+            Text(
+              '${percentage.toStringAsFixed(1)}%',
+              style: const TextStyle(
+                fontSize: 9,
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _badge(Color color) {
@@ -1373,8 +1442,8 @@ class _ProductionReportScreenState extends State<ProductionReportScreen> {
           title: const Text('تقرير الانتاج', style: TextStyle(fontWeight: FontWeight.bold)), 
           centerTitle: true,
           elevation: 0,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
+          // backgroundColor: Colors.white,
+          // foregroundColor: Colors.black,
         ),
         body: Column(
           children: [
