@@ -1695,6 +1695,7 @@ class _CropReportScreenState extends State<CropReportScreen> {
     'avg_fixed': 'ت الثابتة',
     'total_cost_calc': 'إجمالي التكلفة',
     'profit_loss': 'الربح / الخسارة',
+    'avg_mainsalesprice': 'م سعر البيع الاصلي',
   };
 
   List<String> selectedColumns = []; // الأعمدة التي اختارها المستخدم

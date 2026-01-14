@@ -395,7 +395,8 @@ class _SalesInvoiceReportScreenState extends State<SalesInvoiceReportScreen> {
   final Map<String, String> numericColumnsMap = {
     'GrossWeight': 'الوزن القائم',
     'CTNCountInPallets': 'عدد الكرتون',
-    'Pallet_Count': 'عدد البالتات'
+    'Pallet_Count': 'عدد البالتات',
+    'InvoiceValue': 'قيمة المبيعات الاصليه'
   };
 
   List<String> selectedTextCols = [];
