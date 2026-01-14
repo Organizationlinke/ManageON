@@ -389,6 +389,7 @@ class _SalesInvoiceReportScreenState extends State<SalesInvoiceReportScreen> {
     'Brand': 'الماركه',
     'Country':'الدولة',
     'CustomerName': 'العميل',
+    'InvoiceNumber':'رقم الفاتورة'
   };
 
   final Map<String, String> numericColumnsMap = {

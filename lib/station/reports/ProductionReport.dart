@@ -1491,7 +1491,7 @@ class _ProductionReportScreenState extends State<ProductionReportScreen> {
                     onChanged: (v) => setState(() => selectedClass = v),
                   ),
                 ),
-                IconButton.filledTonal(onPressed: _showColumnsOptions, icon: const Icon(Icons.settings)),
+                IconButton.filledTonal(onPressed: _showColumnsOptions, icon: const Icon(Icons.view_column_rounded)),
               ],
             ),
             const SizedBox(height: 12),

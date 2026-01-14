@@ -1971,7 +1971,7 @@ class _CropReportScreenState extends State<CropReportScreen> {
                 const SizedBox(height: 16),
                 _buildReportSection("2. تقرير الفرزة", farzaReport, type: 'farza'),
                 const SizedBox(height: 16),
-                _buildReportSection("3. تقرير الإنتاج", productionReport, type: 'prod'),
+                _buildReportSection("3. تقرير الإنتاج (القيم بالدولار)", productionReport, type: 'prod'),
               ],
             ],
           ),

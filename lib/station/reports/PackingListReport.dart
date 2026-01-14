@@ -704,7 +704,7 @@ class _PackingListReportScreenState extends State<PackingListReportScreen> {
                 const SizedBox(width: 8),
                 IconButton.filledTonal(
                   onPressed: _showColumnsOptions,
-                  icon: const Icon(Icons.settings_suggest_rounded),
+                  icon: const Icon(Icons.view_column_rounded),
                   tooltip: 'إعدادات العرض',
                 ),
               ],
