@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manageon/Vodavon/VodafoneCash.dart';
+import 'package:manageon/station/Finance/Shipping.dart';
 import 'package:manageon/station/Operation/MainOperation.dart';
 import 'package:manageon/station/Operation/OperationApp.dart';
 import 'package:manageon/station/reports/ReportsList.dart';
@@ -33,6 +34,24 @@ class MainFiltersScreen extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) =>
                                      const HomeScreen()
+                                 
+                          ));
+                        
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: _buildMainButton(
+                      title: "العملاء",
+                      icon: Icons.task_alt,
+                      color: Colors.blue,
+                      onTap: () {
+                         
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     const ShippingManagementScreen()
                                  
                           ));
                         
