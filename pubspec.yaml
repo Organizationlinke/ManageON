@@ -62,6 +62,8 @@ dependencies:
   
   fl_chart: ^0.67.0 # للرسوم البيانية
   google_fonts: ^4.0.4
+  pdf: ^3.10.8
+  printing: ^5.11.1
 
 
 dev_dependencies:

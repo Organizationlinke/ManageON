@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manageon/Vodavon/VodafoneCash.dart';
+import 'package:manageon/station/Finance/OtherCostRoles.dart';
 import 'package:manageon/station/Finance/Shipping.dart';
 import 'package:manageon/station/Operation/MainOperation.dart';
 import 'package:manageon/station/Operation/OperationApp.dart';
@@ -51,7 +52,7 @@ class MainFiltersScreen extends StatelessWidget {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) =>
-                                     const ShippingManagementScreen()
+                                     const OtherCostRolesScreen()
                                  
                           ));
                         
@@ -94,6 +95,117 @@ class MainFiltersScreen extends StatelessWidget {
                                      const OperationApp()
                                  
                           ));
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: _buildMainButton(
+                      title: "التقارير",
+                      icon: Icons.bar_chart,
+                      color: Colors.purple,
+                      onTap: () {
+                                 Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     const ReportsDashboardScreen()
+                                 
+                          ));
+                      },
+                    ),
+                  ),
+                   const SizedBox(width: 20),
+                  Expanded(
+                    child: _buildMainButton(
+                      title: "فودافون كاش",
+                      icon: Icons.bar_chart,
+                      color: Colors.purple,
+                      onTap: () {
+                                 Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     const VodafoneCashApp()
+                                 
+                          ));
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMainButton({
+    required String title,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: color.withOpacity(.15),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: color, width: 2),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 50, color: color),
+            const SizedBox(height: 10),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 20,
+                color: color,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FinanceScreen extends StatelessWidget {
+  const FinanceScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Manage ON"),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+      
+            Expanded(
+              child: Row(
+                children: [
+             Expanded(
+                    child: _buildMainButton(
+                      title: "التكاليف الاساسية",
+                      icon: Icons.task_alt,
+                      color: Colors.blue,
+                      onTap: () {
+                         
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     const OtherCostRolesScreen()
+                                 
+                          ));
+                        
                       },
                     ),
                   ),
