@@ -1763,7 +1763,7 @@ class _CropReportScreenState extends State<CropReportScreen> {
           'p_date_to': dateToStr,
           'p_crop_name': selectedItem?['CropNameAr'] == 'الكل' ? null : selectedItem?['CropNameAr'],
         }),
-        supabase.rpc('get_production_report', params: {
+        supabase.rpc('get_production_report2', params: {
           'p_date_from': dateFromStr,
           'p_date_to': dateToStr,
           'p_crop_name': selectedItem?['Items'],

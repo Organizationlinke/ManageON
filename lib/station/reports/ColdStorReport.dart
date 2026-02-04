@@ -384,6 +384,7 @@ class _ColdStorReportScreenState extends State<ColdStorReportScreen> {
     'CTNWeight': 'وزن الكرتون',
     'Brand': 'الماركة',
     'Country': 'الدولة',
+    'lotnumber':'رقم اللوط'
   };
 
   final Map<String, String> numericColumnsMap = {

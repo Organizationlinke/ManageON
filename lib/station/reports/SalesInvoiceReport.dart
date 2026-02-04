@@ -436,7 +436,9 @@ class _SalesInvoiceReportScreenState extends State<SalesInvoiceReportScreen> {
     'GrossWeight': 'الوزن القائم',
     'CTNCountInPallets': 'عدد الكرتون',
     'Pallet_Count': 'عدد البالتات',
-    'InvoiceValue': 'قيمة المبيعات الاصليه'
+    'AMT_USD_FOB': 'قيمة المبيعات الاصليه',
+   
+   
   };
 
   List<String> selectedTextCols = [];

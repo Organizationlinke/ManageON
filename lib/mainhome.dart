@@ -225,6 +225,31 @@ class FinanceScreen extends StatelessWidget {
                       },
                     ),
                   ),
+               
+                ],
+              ),
+            ),
+            SizedBox(height: 10,),
+              Expanded(
+              child: Row(
+                children: [
+            
+                
+                  Expanded(
+                    child: _buildMainButton(
+                      title: "المشحون",
+                      icon: Icons.bar_chart,
+                      color: Colors.purple,
+                      onTap: () {
+                            //      Navigator.of(context).push(
+                            // MaterialPageRoute(
+                            //     builder: (context) =>
+                            //          const ShippingManagementScreen()
+                                 
+                          // ));
+                      },
+                    ),
+                  ),
                    const SizedBox(width: 20),
                   Expanded(
                     child: _buildMainButton(
