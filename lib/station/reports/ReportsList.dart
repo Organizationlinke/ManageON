@@ -12,7 +12,6 @@ import 'package:manageon/station/reports/ProductionReport.dart';
 import 'package:manageon/station/reports/RawReport.dart';
 import 'package:manageon/station/reports/SalesInvoiceReport.dart';
 import 'package:manageon/station/reports/TotalOperation.dart';
-import 'package:manageon/station/reports/TotalOperation2.dart';
 
 class ReportsDashboardScreen extends StatelessWidget {
   const ReportsDashboardScreen({super.key});
@@ -29,7 +28,7 @@ class ReportsDashboardScreen extends StatelessWidget {
       _ReportItem('تقرير المشحون', Icons.local_shipping_rounded, 'shipped', Colors.indigo),
         _ReportItem('تقرير نتيجة الاعمال', Icons.analytics, 'operation', Colors.indigo),
        _ReportItem('تقرير التخطيط', Icons.analytics, 'Planning', Colors.indigo),
-        _ReportItem('test', Icons.analytics, 'test', Colors.indigo),
+        _ReportItem('تقرير التحصيلات', Icons.analytics, 'test', Colors.indigo),
     ];
 
     double screenWidth = MediaQuery.of(context).size.width;
