@@ -4,6 +4,7 @@ import 'package:manageon/global.dart';
 
 // استيراد الشاشات الخاصة بك كما في الكود الأصلي
 import 'package:manageon/station/reports/ColdStorReport.dart';
+import 'package:manageon/station/reports/CollectionsReportScreen.dart';
 import 'package:manageon/station/reports/FarzaReport.dart';
 import 'package:manageon/station/reports/PackingListReport.dart';
 import 'package:manageon/station/reports/PlanningReport.dart';
@@ -142,7 +143,7 @@ class ReportsDashboardScreen extends StatelessWidget {
         screen = PlanninReportScreen();
         break;
            case 'test':
-        screen = CropReportScreen2();
+        screen = CollectionsReportScreen();
         break;
       default:
         return;

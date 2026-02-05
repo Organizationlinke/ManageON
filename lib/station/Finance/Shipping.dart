@@ -473,7 +473,7 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl ;
 import 'package:flutter/services.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart'; // لاختيار الملفات في الويب
@@ -748,42 +748,45 @@ class _ShippingManagementScreenState extends State<ShippingManagementScreen> {
 
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          title: const TabBar(
-            labelColor: Colors.white,
-            indicatorColor: Colors.white,
-            tabs: [
-              Tab(text: "مواعيد مطلوبة", icon: Icon(Icons.pending_actions)),
-              Tab(text: "مواعيد مكتملة", icon: Icon(Icons.check_circle_outline)),
-            ],
-          ),
-          actions: [
-            PopupMenuButton<String>(
-              icon: const Icon(Icons.more_vert, color: Colors.white),
-              onSelected: (val) {
-                if (val == 'download') _downloadExcelTemplate();
-                if (val == 'upload') _importFromExcel();
-                if (val == 'copy') _copyTableToClipboard(_allInvoices);
-              },
-              itemBuilder: (ctx) => [
-                const PopupMenuItem(value: 'download', child: ListTile(leading: Icon(Icons.download), title: Text("تحميل القالب"))),
-                const PopupMenuItem(value: 'upload', child: ListTile(leading: Icon(Icons.upload_file), title: Text("رفع البيانات"))),
-                const PopupMenuItem(value: 'copy', child: ListTile(leading: Icon(Icons.copy), title: Text("نسخ الكل"))),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            title: const TabBar(
+              labelColor: Colors.white,
+              indicatorColor: Colors.white,
+              tabs: [
+                Tab(text: "مواعيد مطلوبة", icon: Icon(Icons.pending_actions)),
+                Tab(text: "مواعيد مكتملة", icon: Icon(Icons.check_circle_outline)),
               ],
             ),
-            IconButton(icon: const Icon(Icons.refresh, color: Colors.white), onPressed: _fetchData)
-          ],
-        ),
-        body: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : TabBarView(
-                children: [
-                  _buildInvoicesTable(_applyFilters(incomplete), isUpdate: false),
-                  _buildInvoicesTable(_applyFilters(complete), isUpdate: true),
+            actions: [
+              PopupMenuButton<String>(
+                icon: const Icon(Icons.more_vert, color: Colors.white),
+                onSelected: (val) {
+                  if (val == 'download') _downloadExcelTemplate();
+                  if (val == 'upload') _importFromExcel();
+                  if (val == 'copy') _copyTableToClipboard(_allInvoices);
+                },
+                itemBuilder: (ctx) => [
+                  const PopupMenuItem(value: 'download', child: ListTile(leading: Icon(Icons.download), title: Text("تحميل القالب"))),
+                  const PopupMenuItem(value: 'upload', child: ListTile(leading: Icon(Icons.upload_file), title: Text("رفع البيانات"))),
+                  const PopupMenuItem(value: 'copy', child: ListTile(leading: Icon(Icons.copy), title: Text("نسخ الكل"))),
                 ],
               ),
+              IconButton(icon: const Icon(Icons.refresh, color: Colors.white), onPressed: _fetchData)
+            ],
+          ),
+          body: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : TabBarView(
+                  children: [
+                    _buildInvoicesTable(_applyFilters(incomplete), isUpdate: false),
+                    _buildInvoicesTable(_applyFilters(complete), isUpdate: true),
+                  ],
+                ),
+        ),
       ),
     );
   }
@@ -866,7 +869,7 @@ class _ShippingManagementScreenState extends State<ShippingManagementScreen> {
               const SizedBox(height: 10),
               ListTile(
                 title: const Text("ETD"),
-                subtitle: Text(selectedETD == null ? "اختر التاريخ" : DateFormat('yyyy-MM-dd').format(selectedETD!)),
+                subtitle: Text(selectedETD == null ? "اختر التاريخ" : intl.DateFormat('yyyy-MM-dd').format(selectedETD!)),
                 onTap: () async {
                   DateTime? p = await showDatePicker(context: context, initialDate: selectedETD ?? DateTime.now(), firstDate: DateTime(2020), lastDate: DateTime(2030));
                   if (p != null) setDialogState(() => selectedETD = p);
@@ -874,7 +877,7 @@ class _ShippingManagementScreenState extends State<ShippingManagementScreen> {
               ),
               ListTile(
                 title: const Text("ETA"),
-                subtitle: Text(selectedETA == null ? "اختر التاريخ" : DateFormat('yyyy-MM-dd').format(selectedETA!)),
+                subtitle: Text(selectedETA == null ? "اختر التاريخ" : intl.DateFormat('yyyy-MM-dd').format(selectedETA!)),
                 onTap: () async {
                   DateTime? p = await showDatePicker(context: context, initialDate: selectedETA ?? DateTime.now(), firstDate: DateTime(2020), lastDate: DateTime(2030));
                   if (p != null) setDialogState(() => selectedETA = p);

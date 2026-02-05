@@ -44,7 +44,7 @@ class MainFiltersScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Expanded(
                     child: _buildMainButton(
-                      title: "العملاء",
+                      title: "الماليه",
                       icon: Icons.task_alt,
                       color: Colors.blue,
                       onTap: () {
@@ -52,7 +52,7 @@ class MainFiltersScreen extends StatelessWidget {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) =>
-                                     const OtherCostRolesScreen()
+                                     const FinanceScreen()
                                  
                           ));
                         
@@ -85,14 +85,14 @@ class MainFiltersScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _buildMainButton(
-                      title: "الجودة",
+                      title: "المشحون",
                       icon: Icons.verified,
                       color: Colors.green,
                       onTap: () {
                          Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) =>
-                                     const OperationApp()
+                                     const ShippingManagementScreen()
                                  
                           ));
                       },
@@ -233,24 +233,6 @@ class FinanceScreen extends StatelessWidget {
               Expanded(
               child: Row(
                 children: [
-            
-                
-                  Expanded(
-                    child: _buildMainButton(
-                      title: "المشحون",
-                      icon: Icons.bar_chart,
-                      color: Colors.purple,
-                      onTap: () {
-                            //      Navigator.of(context).push(
-                            // MaterialPageRoute(
-                            //     builder: (context) =>
-                            //          const ShippingManagementScreen()
-                                 
-                          // ));
-                      },
-                    ),
-                  ),
-                   const SizedBox(width: 20),
                   Expanded(
                     child: _buildMainButton(
                       title: "فودافون كاش",
