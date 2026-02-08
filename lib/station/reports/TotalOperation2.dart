@@ -496,4 +496,5 @@ class _CropReportScreenState extends State<CropReportScreen2> {
     if (value == null) return "0.00";
     return intl.NumberFormat("#,##0.00").format(value);
   }
+  
 }

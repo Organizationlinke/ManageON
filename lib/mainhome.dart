@@ -311,6 +311,7 @@ import 'package:flutter/material.dart';
 // استيراد الشاشات الخاصة بك
 import 'package:manageon/Vodavon/VodafoneCash.dart';
 import 'package:manageon/global.dart';
+import 'package:manageon/station/Finance/InvoiceAdditional.dart';
 import 'package:manageon/station/Finance/OtherCostRoles.dart';
 import 'package:manageon/station/Finance/Payments.dart';
 import 'package:manageon/station/Finance/Shipping.dart';
@@ -367,6 +368,7 @@ class FinanceScreen extends StatelessWidget {
       _MenuAction('التقارير المالية', Icons.analytics_rounded, Colors.purple, const ReportsDashboardScreen()),
       _MenuAction('فودافون كاش', Icons.phone_android_rounded, Colors.red, const VodafoneCashApp()),
       _MenuAction('تسجيل التحصيلات', Icons.payments_rounded, Colors.green, const CustomerPaymentsScreen()),
+      _MenuAction('تسجيل الخصومات', Icons.payments_rounded, Colors.green, const InvoiceAdditionalScreen()),
     ];
 
     return _BaseDashboard(
