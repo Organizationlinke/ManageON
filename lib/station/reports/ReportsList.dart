@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:manageon/station/Finance/Shipping.dart';
 
 // استيراد الشاشات الخاصة بك كما في الكود الأصلي
 import 'package:manageon/station/reports/ColdStorReport.dart';
@@ -360,5 +361,128 @@ class SalesReportsDashboardScreen extends StatelessWidget {
     );
   }
 }
+
+class LogesticReportsDashboardScreen extends StatelessWidget {
+  const LogesticReportsDashboardScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // قائمة البيانات مع ألوان مخصصة لكل تقرير
+    final items = [
+    
+      _ReportItem('تسجيل تواريخ الحاويات', Icons.analytics_rounded, 'sales', Colors.purple),
+      _ReportItem('رصيد الثلاجة', Icons.ac_unit_rounded, 'fridge', Colors.cyan),
+      _ReportItem('تقرير المشحون', Icons.local_shipping_rounded, 'shipped', Colors.indigo),
+     
+       
+    ];
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    int crossAxisCount = screenWidth > 900 ? 4 : (screenWidth > 600 ? 3 : 2);
+
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+      
+        // backgroundColor: const Color(0xffF8FAFC),
+        body: 
+        CustomScrollView(
+          slivers: [
+            const SliverAppBar(
+              // expandedHeight: 120.0,
+              floating: false,
+              pinned: true,
+              elevation: 0,
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: EdgeInsetsDirectional.only(start: 24, bottom: 16),
+                centerTitle: true,
+                title: Text(
+                  'مركز التقارير',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                    color: Color.fromARGB(255, 255, 255, 255)
+                  ),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.all(24),
+              sliver: SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                  childAspectRatio: 1.0,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final item = items[index];
+                    return _ReportCard(
+                      item: item,
+                      onTap: () => _navigateToReport(context, item.key),
+                    );
+                  },
+                  childCount: items.length,
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.blue.withOpacity(0.1)),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.info_outline, color: Colors.blue),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'يتم تحديث جميع التقارير لحظياً بناءً على البيانات المدخلة في النظام.',
+                          style: TextStyle(color: Colors.blueGrey, fontSize: 13),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  // دالة التنقل الفعالة التي تدعم الشاشات الخاصة بك
+  void _navigateToReport(BuildContext context, String key) {
+    Widget screen;
+
+    switch (key) {
+     
+      case 'sales':
+        screen = ShippingManagementScreen();
+        break;
+      case 'fridge':
+        screen = ColdStorReportScreen();
+        break;
+      case 'shipped':
+        screen = PackingListReportScreen();
+        break;
+      default:
+        return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => screen),
+    );
+  }
+}
+
 
 
