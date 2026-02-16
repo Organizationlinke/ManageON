@@ -342,7 +342,7 @@ class _CollectionsReportScreenState extends State<CollectionsReportScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          title: const Text('تقرير التحصيلات'),
+          title: const Text('تقرير التحصيلات بالدولار'),
           centerTitle: true,
           actions: [
             // إضافة زر النسخ في الـ AppBar

@@ -644,7 +644,8 @@ class _InvoiceAdditionalScreenState extends State<InvoiceAdditionalScreen> {
             DataColumn(label: Text('خصم الوزن')),
             DataColumn(label: Text('نولون مقدم')),
           ],
-          rows: _filteredInvoices.map((i) {
+          rows: _filteredInvoices.map((i) 
+          {
             String currencyName = '';
             switch (i['CurrencyId']) {
               case 405: currencyName = 'دولار'; break;
@@ -662,7 +663,8 @@ class _InvoiceAdditionalScreenState extends State<InvoiceAdditionalScreen> {
               DataCell(Text(i['WeightDeduction']?.toString() ?? '0')),
               DataCell(Text(i['FreightAdvance']?.toString() ?? '0')),
             ]);
-          }).toList(),
+          }
+          ).toList(),
         ),
       ),
     );
