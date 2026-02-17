@@ -20,6 +20,7 @@ class _CollectionsReportScreenState extends State<CollectionsReportScreen> {
   String? selectedCustomer;
 
   final Map<String, String> textColumnsMap = {
+    'Base_CustomerName': 'العميل الاساسي',
     'Payment_terms': 'شروط الدفع',
     'Basd_Date': 'اساس الاستحقاق',
     'InvoiceNumber': 'رقم الفاتورة',
