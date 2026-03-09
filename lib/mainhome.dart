@@ -341,7 +341,7 @@ class MainFiltersScreen extends StatelessWidget {
     final List<_MenuAction> mainActions = [
       _MenuAction('المهام', Icons.task_alt_rounded, Colors.blue, const HomeScreen()),
       _MenuAction('المالية', Icons.account_balance_wallet_rounded, Colors.teal, const FinanceScreen()),
-      _MenuAction('التشغيل', Icons.settings_suggest_rounded, Colors.orange, MainOperation()),
+      _MenuAction('التشغيل', Icons.settings_suggest_rounded, Colors.orange, ProductionDashboardScreen()),
       _MenuAction('المشحون', Icons.local_shipping_rounded, Colors.green, const ShippingManagementScreen()),
       _MenuAction('التقارير', Icons.insert_chart_outlined_rounded, Colors.purple, const ReportsDashboardScreen()),
       _MenuAction('فودافون كاش', Icons.smartphone_rounded, Colors.redAccent, const VodafoneCashApp()),

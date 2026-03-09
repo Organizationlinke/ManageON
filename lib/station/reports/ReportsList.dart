@@ -11,6 +11,7 @@ import 'package:manageon/station/reports/PlanningReport.dart';
 import 'package:manageon/station/reports/ProductionReport.dart';
 import 'package:manageon/station/reports/RawReport.dart';
 import 'package:manageon/station/reports/SalesInvoiceReport.dart';
+import 'package:manageon/station/reports/SalesInvoicewithCosts.dart';
 import 'package:manageon/station/reports/TotalOperation.dart';
 
 class ReportsDashboardScreen extends StatelessWidget {
@@ -29,6 +30,7 @@ class ReportsDashboardScreen extends StatelessWidget {
         _ReportItem('تقرير نتيجة الاعمال', Icons.analytics, 'operation', Colors.indigo),
        _ReportItem('تقرير التخطيط', Icons.analytics, 'Planning', Colors.indigo),
         _ReportItem('تقرير التحصيلات', Icons.analytics, 'test', Colors.indigo),
+         _ReportItem('تقرير المبيعات مع التكاليف', Icons.analytics, 'SalesInvoicewithCosts', Colors.indigo),
     ];
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -143,6 +145,9 @@ class ReportsDashboardScreen extends StatelessWidget {
         break;
            case 'test':
         screen = CollectionsReportScreen();
+        break;
+         case 'SalesInvoicewithCosts':
+        screen = SalesInvoicewithCosts();
         break;
       default:
         return;

@@ -1,26 +1,27 @@
 
 import 'package:flutter/material.dart';
+import 'package:manageon/global.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:async';
 import 'package:intl/intl.dart' as intl;
 
-class FaultLoggingApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'نظام تسجيل الأعطال',
-      theme: ThemeData(
-        useMaterial3: true,
-        primarySwatch: Colors.indigo,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-        fontFamily: 'Roboto',
-      ),
-      debugShowCheckedModeBanner: false,
-      home: MainNavigationScreen(),
-      locale: const Locale('ar', 'AE'),
-    );
-  }
-}
+// class FaultLoggingApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'نظام تسجيل الأعطال',
+//       theme: ThemeData(
+//         useMaterial3: true,
+//         primarySwatch: Colors.indigo,
+//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+//         fontFamily: 'Roboto',
+//       ),
+//       debugShowCheckedModeBanner: false,
+//       home: MainNavigationScreen(),
+//       locale: const Locale('ar', 'AE'),
+//     );
+//   }
+// }
 
 class MainNavigationScreen extends StatefulWidget {
   @override
@@ -75,9 +76,10 @@ class _FaultDashboardState extends State<FaultDashboard> with SingleTickerProvid
       appBar: AppBar(
         title: const Text('إدارة أعطال الخطوط'),
         bottom: TabBar(
+          labelColor: const Color.fromARGB(255, 255, 255, 255),
           controller: _tabController,
           tabs: const [
-            Tab(text: 'الخط الأول'),
+            Tab(text: 'الخط الأول',),
             Tab(text: 'الخط الثاني'),
           ],
         ),

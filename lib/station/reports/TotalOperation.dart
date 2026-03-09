@@ -529,7 +529,10 @@ class _CropReportScreenState extends State<CropReportScreen> {
     'avg_wages': 'ت الاجور',
     'avg_shipping': 'ت الشحن',
     'avg_fixed': 'ت الثابتة',
+    'avg_utilities': 'ت مياه وكهرباء',
+    'avg_cleansing': 'ت شموع ومطهرات',
     'total_cost_calc': 'إجمالي التكلفة',
+    
     'profit_loss': 'الربح / الخسارة',
     'avg_mainsalesprice': 'م سعر البيع الاصلي',
   };
@@ -625,9 +628,11 @@ class _CropReportScreenState extends State<CropReportScreen> {
       double wages = (row['avg_wages'] ?? 0.0).toDouble();
       double shipping = (row['avg_shipping'] ?? 0.0).toDouble();
       double fixed = (row['avg_fixed'] ?? 0.0).toDouble();
+      double utilities = (row['avg_utilities'] ?? 0.0).toDouble();
+      double cleansing = (row['avg_cleansing'] ?? 0.0).toDouble();
       double salesPrice = (row['avg_salesprice'] ?? 0.0).toDouble();
 
-      double totalCost = avgPrice + carton + packing + wages + shipping + fixed;
+      double totalCost = avgPrice + carton + packing + wages + shipping + fixed+utilities+cleansing;
       double profitLoss = salesPrice - totalCost;
 
       return {
@@ -673,6 +678,8 @@ class _CropReportScreenState extends State<CropReportScreen> {
             'avg_wages': 0.0,
             'avg_shipping': 0.0,
             'avg_fixed': 0.0,
+            'avg_utilities': 0.0,
+            'avg_cleansing': 0.0,
           };
         }
         double weight = (item['net_weight'] ?? 0.0).toDouble();
@@ -690,6 +697,8 @@ class _CropReportScreenState extends State<CropReportScreen> {
         addWeighted('avg_wages');
         addWeighted('avg_shipping');
         addWeighted('avg_fixed');
+        addWeighted('avg_utilities');
+        addWeighted('avg_cleansing');
       }
 
       prodList = groupedProd.values.map((item) {
@@ -707,6 +716,8 @@ class _CropReportScreenState extends State<CropReportScreen> {
         finalizeWeighted('avg_wages');
         finalizeWeighted('avg_shipping');
         finalizeWeighted('avg_fixed');
+        finalizeWeighted('avg_utilities');
+        finalizeWeighted('avg_cleansing');
 
         return calculateRowExtras(result);
       }).toList();
@@ -1031,7 +1042,8 @@ class _CropReportScreenState extends State<CropReportScreen> {
                       if (type == 'prod') ...selectedColumns.map((colKey) => DataCell(Text(_format(row[colKey])))),
                       if (type != 'raw')
                         DataCell(Text("${percentage.toStringAsFixed(1)}%", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue))),
-                    ]);
+                    ]
+                    );
                   }).toList(),
                   if (summaryRow != null) summaryRow,
                 ],

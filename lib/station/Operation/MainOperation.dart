@@ -3,17 +3,17 @@ import 'package:manageon/station/Operation/OperationApp.dart';
 import 'package:manageon/station/Operation/faults_page.dart';
 
 
-class MainOperation extends StatelessWidget {
-  const MainOperation({super.key});
+// class MainOperation extends StatelessWidget {
+//   const MainOperation({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const ProductionDashboardScreen(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: const ProductionDashboardScreen(),
+//     );
+//   }
+// }
 
 /// =======================
 /// الشاشة الرئيسية
@@ -23,45 +23,48 @@ class ProductionDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('لوحة تشغيل خط الإنتاج'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            // زر تسجيل الأعطال
-            _DashboardButton(
-              icon: Icons.build_circle,
-              label: 'تسجيل الأعطال اليومية',
-              color: Colors.redAccent,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) =>  FaultLoggingApp(),
-                  ),
-                );
-              },
-            ),
-
-            // زر تشغيل خط الإنتاج
-            _DashboardButton(
-              icon: Icons.play_circle_fill,
-              label: 'تشغيل خط الإنتاج',
-              color: Colors.green,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const OperationApp(),
-                  ),
-                );
-              },
-            ),
-          ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('لوحة تشغيل خط الإنتاج'),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // زر تسجيل الأعطال
+              _DashboardButton(
+                icon: Icons.build_circle,
+                label: 'تسجيل الأعطال اليومية',
+                color: Colors.redAccent,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>  MainNavigationScreen(),
+                    ),
+                  );
+                },
+              ),
+      
+              // زر تشغيل خط الإنتاج
+              _DashboardButton(
+                icon: Icons.play_circle_fill,
+                label: 'تشغيل خط الإنتاج',
+                color: Colors.green,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const OperationApp(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
